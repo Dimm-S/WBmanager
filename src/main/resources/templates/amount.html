@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style type="text/css">
+  .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+  .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+    font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+    font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg .tg-cyim{font-size:22px;text-align:left;vertical-align:top}
+</style>
+
+<h1>Выручка по месяцам</h1>
+<body>
+<table class="tg">
+  <thead>
+  <tr>
+    <th class="tg-cyim">Месяц</th>
+    <th class="tg-cyim">Выручка</th>
+    <th class="tg-cyim">Комиссия</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr th:each="am : ${amount}">
+    <td th:text="${am.month}">XXX</td>
+    <td th:text="${am.amount}">XX XXX.XX</td>
+    <td th:text="${am.commission}">XXX</td>
+  </tr>
+
+  </tbody>
+</table>
+</body>
+
+</html>

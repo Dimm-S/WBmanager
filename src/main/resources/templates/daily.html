@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-color:#93a1a1;border-spacing:0;}
+    .tg td{background-color:#fdf6e3;border-color:#93a1a1;border-style:solid;border-width:1px;color:#002b36;
+        font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 8px;word-break:normal;}
+    .tg th{background-color:#657b83;border-color:#93a1a1;border-style:solid;border-width:1px;color:#fdf6e3;
+        font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 8px;word-break:normal;}
+    .tg .tg-mpz2{background-color:#fdf6e3;border-color:#93a1a1;color:#002b36;text-align:left;vertical-align:top}
+    .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<body>
+<table class="tg">
+    <thead>
+    <tr>
+        <th class="tg-mpz2"></th>
+        <th class="tg-0pky" colspan="2">Заказы</th>
+        <th class="tg-0pky" colspan="2">Продажи</th>
+        <th class="tg-0pky" colspan="2">Возвраты</th>
+        <th class="tg-0pky">К выплате</th>
+        <th class="tg-0pky">Подробно</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="d : ${orsales}">
+        <td class="tg-0pky" th:text="${d.date}" >16-01-2023</td>
+        <td class="tg-0pky" th:text="${d.orders.ordersQuantity}">10</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.orders.ordersSum, 1, 'WHITESPACE', 2, 'COMMA')}">1135,12</td>
+        <td class="tg-0pky" th:text="${d.sales.salesQuantity}">5</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.sales.salesSum, 1, 'WHITESPACE', 2, 'COMMA')}">5045</td>
+        <td class="tg-0pky" th:text="${d.returns.returnsQuantity}">5</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.returns.returnSum, 1, 'WHITESPACE', 2, 'COMMA')}">1214</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.forPay, 1, 'WHITESPACE', 2, 'COMMA')}">1112,3</td>
+        <td>
+            <a href="details.html" th:href="@{/analytics/daily/details(date=${d.date})}">View</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

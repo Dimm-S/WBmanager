@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.load('current', {'packages':['bar']});
+        google.charts.load('current', {'packages':['table']});
+
+        google.charts.setOnLoadCallback(drawLineChart);
+        google.charts.setOnLoadCallback(drawAreaChart);
+        google.charts.setOnLoadCallback(drawTable);
+        google.charts.setOnLoadCallback(drawOrdersTable);
+
+        function drawLineChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Месяц');
+            data.addColumn('number', 'Выручка');
+            data.addColumn('number', 'Комиссия');
+            data.addRows(/*[[${amountchart}]]*/);
+
+
+                var options = {
+                title: 'Выручка по месяцам',
+                // curveType: 'function',
+                legend: { position: 'bottom' },
+                lineWidth: 3
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawAreaChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'День');
+            data.addColumn('number', 'Продажи');
+            data.addRows(/*[[${saleschart}]]*/);
+
+
+            var options = {
+                title: 'Продажи по дням',
+                hAxis: {title: 'Январь',  titleTextStyle: {color: '#333'}},
+                // vAxis: {minValue: 0}
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('area_chart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawTable() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Месяц');
+            data.addColumn('number', 'Выручка');
+            data.addColumn('number', 'Комиссия');
+            data.addRows(/*[[${amountchart}]]*/);
+
+            var table = new google.visualization.Table(document.getElementById('table_div'));
+
+            table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+        }
+    </script>
+</head>
+
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-color:#93a1a1;border-spacing:0;}
+    .tg td{background-color:#fdf6e3;border-color:#93a1a1;border-style:solid;border-width:1px;color:#002b36;
+        font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 8px;word-break:normal;}
+    .tg th{background-color:#657b83;border-color:#93a1a1;border-style:solid;border-width:1px;color:#fdf6e3;
+        font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 8px;word-break:normal;}
+    .tg .tg-mpz2{background-color:#fdf6e3;border-color:#93a1a1;color:#002b36;text-align:left;vertical-align:top}
+    .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+
+
+<body>
+    <table class="columns">
+        <tr>
+            <td><div id="curve_chart" style="width: 900px; height: 500px"></div></td>
+            <td><div id="area_chart" style="width: 900px; height: 500px;"></div></td>
+        </tr>
+        <tr>
+            <td><div id="table_div" style="width: 900px; height: 200px"></div></td>
+        </tr>
+        <tr>
+
+        </tr>
+    </table>
+    <table class="tg">
+        <thead>
+        <tr>
+            <th class="tg-mpz2"></th>
+            <th class="tg-0pky" colspan="2">Заказы</th>
+            <th class="tg-0pky" colspan="2">Продажи</th>
+            <th class="tg-0pky" colspan="2">Возвраты</th>
+            <th class="tg-0pky">К выплате</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="d : ${orsales}">
+            <td class="tg-0pky" th:text="${d.date}">16-01-2023</td>
+            <td class="tg-0pky" th:text="${d.orders.ordersQuantity}">10</td>
+            <td class="tg-0pky" th:text="${d.orders.ordersSum}">1135,12</td>
+            <td class="tg-0pky" th:text="${d.sales.salesQuantity}">5</td>
+            <td class="tg-0pky" th:text="${d.sales.salesSum}">5</td>
+            <td class="tg-0pky" th:text="${d.returns.returnsQuantity}">5</td>
+            <td class="tg-0pky" th:text="${d.returns.returnSum}">5</td>
+            <td class="tg-0pky" th:text="${d.forPay}">1112,3</td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>
