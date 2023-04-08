@@ -31,18 +31,27 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return reportDetailByPeriodService.getAmountByMonthForChart();
     }
 
+    /**
+     * Заказы и продажи на диапазон дат (последние 7 дней)
+     * @return
+     */
     @Override
     public List<OrdersAndSalesForDashbordDto> getOrdersAndSalesAndReturnsByDates() {
         List<LocalDate> datesList = getDatesList();
-        List<List<Object[]>> orders = orderService.getOrdersAndSum();
-        List<List<Object[]>> sales = saleService.getSalesAndSum();
-        List<List<Object[]>> returns = saleService.getReturnsAndSum();
-        List<List<Object[]>> forPay = saleService.getForPay();
+        List<List<Object[]>> orders = orderService.getOrdersAndSum(datesList.get(0), datesList.get(6));
+        List<List<Object[]>> sales = saleService.getSalesAndSum(datesList.get(0), datesList.get(6));
+        List<List<Object[]>> returns = saleService.getReturnsAndSum(datesList.get(0), datesList.get(6));
+        List<List<Object[]>> forPay = saleService.getForPay(datesList.get(0), datesList.get(6));
 
         return analyticsMapper.mapForDayliTable(
                 datesList, orders, sales, returns, forPay);
     }
 
+    /**
+     * Заказы и продажи на указанную дату
+     * @param date
+     * @return
+     */
     @Override
     public List<OrdersAndSalesByDateDto> getOrdersAndSalesByDate(String date) {
         List<List<Object[]>> orders = orderService.getOrdersAndSumByDate(date);
@@ -50,15 +59,15 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return analyticsMapper.mapToDetails(orders, salesAndReturnsAndForPay);
     }
 
-    private static List<LocalDate> getDatesList() { //todo Заменить на -7 дней от текущей даты
+    private static List<LocalDate> getDatesList() {
         List<LocalDate> dateList = new ArrayList<>();
-        dateList.add(LocalDate.of(2023, 1, 16));
-        dateList.add(LocalDate.of(2023, 1, 17));
-        dateList.add(LocalDate.of(2023, 1, 18));
-        dateList.add(LocalDate.of(2023, 1, 19));
-        dateList.add(LocalDate.of(2023, 1, 20));
-        dateList.add(LocalDate.of(2023, 1, 21));
-        dateList.add(LocalDate.of(2023, 1, 22));
+        dateList.add(LocalDate.now().minusDays(6));
+        dateList.add(LocalDate.now().minusDays(5));
+        dateList.add(LocalDate.now().minusDays(4));
+        dateList.add(LocalDate.now().minusDays(3));
+        dateList.add(LocalDate.now().minusDays(2));
+        dateList.add(LocalDate.now().minusDays(1));
+        dateList.add(LocalDate.now());
 
         return dateList;
     }

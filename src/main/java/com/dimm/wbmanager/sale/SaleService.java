@@ -9,11 +9,11 @@ public interface SaleService {
 
     List<List<Object>> getSalesByDays();
 
-    List<List<Object[]>> getSalesAndSum();
+    List<List<Object[]>> getSalesAndSum(LocalDate from, LocalDate to);
 
-    List<List<Object[]>> getReturnsAndSum();
+    List<List<Object[]>> getReturnsAndSum(LocalDate from, LocalDate to);
 
-    List<List<Object[]>> getForPay();
+    List<List<Object[]>> getForPay(LocalDate from, LocalDate to);
 
     List<List<Object[]>> getSalesAndSumAndReturnsAndForPayByDate(String date);
 }

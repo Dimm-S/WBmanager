@@ -8,7 +8,7 @@ public interface OrderService {
 
     void updateTable() throws IOException, InterruptedException;
 
-    List<List<Object[]>> getOrdersAndSum();
+    List<List<Object[]>> getOrdersAndSum(LocalDate from, LocalDate to);
 
     List<List<Object[]>> getOrdersAndSumByDate(String date);
 }

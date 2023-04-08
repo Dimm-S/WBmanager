@@ -57,9 +57,9 @@ public class OrderServiceImpl implements OrderService {
 
     /** Количество заказов полное (без учёта отмен) и общая стоимость этих заказов (цена за минусом скидки),
      за указанные даты */
-    @Override  //TODO добавить диапазон дат
-    public List<List<Object[]>> getOrdersAndSum() {
-        return orderRepository.getOrdersAndSum();
+    @Override
+    public List<List<Object[]>> getOrdersAndSum(LocalDate from, LocalDate to) {
+        return orderRepository.getOrdersAndSum(from, to);
     }
 
     /** Количество заказов полное (без учёта отмен) и общая стоимость этих заказов (цена за минусом скидки),

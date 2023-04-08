@@ -21,9 +21,11 @@ public class OrderController {
         orderService.updateTable();
     }
 
+/*
     @GetMapping("/andsum") // только для теста
     public List<List<Object[]>> getOrdersAndSum() {
         List<List<Object[]>> ordersAndSum = orderService.getOrdersAndSum();
         return ordersAndSum;
     }
+*/
 }

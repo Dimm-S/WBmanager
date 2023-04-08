@@ -26,10 +26,10 @@ public interface OrderRepository extends JpaRepository <Order, Long> {
             "cast(order_date as date) as date, " +
             "count(total_price), sum(total_price * discount_percent / 100) " +
             "from orders " +
-            "where cast(order_date as date) between '2023-01-16' and '2023-01-22' " +
+            "where cast(order_date as date) between ?1 and ?2 " +
             "group by cast(order_date as date) " +
             "order by date")
-    List<List<Object[]>> getOrdersAndSum();
+    List<List<Object[]>> getOrdersAndSum(LocalDate from, LocalDate to);
 
     @Query(nativeQuery = true, value = "select " +
             "name, " +

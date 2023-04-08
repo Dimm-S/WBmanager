@@ -67,18 +67,18 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public List<List<Object[]>> getSalesAndSum() {
-        return saleRepository.getSalesAndSum();
+    public List<List<Object[]>> getSalesAndSum(LocalDate from, LocalDate to) {
+        return saleRepository.getSalesAndSum(from, to);
     }
 
     @Override
-    public List<List<Object[]>> getReturnsAndSum() {
-        return saleRepository.getReturnsAndSum();
+    public List<List<Object[]>> getReturnsAndSum(LocalDate from, LocalDate to) {
+        return saleRepository.getReturnsAndSum(from, to);
     }
 
     @Override
-    public List<List<Object[]>> getForPay() {
-        return saleRepository.getForPay();
+    public List<List<Object[]>> getForPay(LocalDate from, LocalDate to) {
+        return saleRepository.getForPay(from, to);
     }
 
     @Override

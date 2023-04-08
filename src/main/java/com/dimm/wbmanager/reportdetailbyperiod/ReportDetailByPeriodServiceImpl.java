@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,9 +24,13 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
     private final ReportDetailByPeriodRepository reportDetailByPeriodRepository;
     private final ReportDetailByPeriodMapper reportDetailByPeriodMapper;
     private final AnalyticsMapper analyticsMapper;
+    private final static String API_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
+            ".eyJhY2Nlc3NJRCI6IjRmYTI1YzU3LTRmZDMtNDI4MC1hZDI4LTBmYmRhNzUwYmIzMSJ9" +
+            ".71_50subAYWjteFgH0hViHwT2ov6blHTCgTaWl6KznQ";
 
     @Override
     public void updateTable() throws JsonProcessingException {
+/*
         final RestTemplate restTemplate = new RestTemplate();
         final String report = restTemplate.getForObject
                 ("https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod" +
@@ -41,6 +47,25 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
                 .collect(Collectors.toList());
 
         reportDetailByPeriodRepository.saveAll(reportsList);
+*/
+        WebClient client = WebClient.builder()
+                .baseUrl("https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod" +
+                        "?dateFrom=2023-01-30&dateto=2023-04-02")
+                .defaultHeader("Authorization", API_TOKEN)
+                .defaultHeader("Content-Type", "application/json")
+                .build();
+
+        Flux<ReportDetailByPeriodInputDto> reports = client
+                .get()
+                .retrieve()
+                .bodyToFlux(ReportDetailByPeriodInputDto.class);
+
+        List<ReportDetailByPeriodInputDto> reportsDtoList = reports.collectList().block();
+
+        for (ReportDetailByPeriodInputDto dto : reportsDtoList) {
+            reportDetailByPeriodRepository.save(reportDetailByPeriodMapper.mapInputToReport(dto));
+        }
+
     }
 
     @Override
@@ -48,14 +73,13 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
         List<Object[]> list = reportDetailByPeriodRepository.getAmountByMonth();
         List<Object[]> returns = reportDetailByPeriodRepository.getReturns();
         List<Object[]> amount = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size() - 1; i++) {  //TODO возможен разный размер list-ов
             Object[] array ={list.get(i)[0], list.get(i)[1],
                     (Float) list.get(i)[2] - (Float) returns.get(i)[2],
                     (Float) list.get(i)[3] - (Float) returns.get(i)[3]};
             amount.add(array);
         }
 
-        //todo разделение разрядов, отброс лишних разрядов после запятой
         return amount.stream()
                 .map(analyticsMapper::mapToAmountByMonthFromObject)
                 .collect(Collectors.toList());
@@ -66,7 +90,7 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
         List<Object[]> list = reportDetailByPeriodRepository.getAmountByMonth();
         List<Object[]> returns = reportDetailByPeriodRepository.getReturns();
         List<Object[]> amount = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size() - 1; i++) {  //TODO возможен разный размер list-ов
             Object[] array ={list.get(i)[0], list.get(i)[1],
                     (Float) list.get(i)[2] - (Float) returns.get(i)[2],
                     (Float) list.get(i)[3] - (Float) returns.get(i)[3]};

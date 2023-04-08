@@ -41,7 +41,7 @@
 
             var options = {
                 title: 'Продажи по дням',
-                hAxis: {title: 'Январь',  titleTextStyle: {color: '#333'}},
+                hAxis: {title: 'Март',  titleTextStyle: {color: '#333'}}, //TODO месяц
                 // vAxis: {minValue: 0}
             };
 
@@ -96,18 +96,22 @@
             <th class="tg-0pky" colspan="2">Продажи</th>
             <th class="tg-0pky" colspan="2">Возвраты</th>
             <th class="tg-0pky">К выплате</th>
+            <th class="tg-0pky">Подробно</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="d : ${orsales}">
             <td class="tg-0pky" th:text="${d.date}">16-01-2023</td>
             <td class="tg-0pky" th:text="${d.orders.ordersQuantity}">10</td>
-            <td class="tg-0pky" th:text="${d.orders.ordersSum}">1135,12</td>
+            <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.orders.ordersSum, 1, 'WHITESPACE', 2, 'COMMA')}">1135,12</td>
             <td class="tg-0pky" th:text="${d.sales.salesQuantity}">5</td>
-            <td class="tg-0pky" th:text="${d.sales.salesSum}">5</td>
+            <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.sales.salesSum, 1, 'WHITESPACE', 2, 'COMMA')}">5</td>
             <td class="tg-0pky" th:text="${d.returns.returnsQuantity}">5</td>
-            <td class="tg-0pky" th:text="${d.returns.returnSum}">5</td>
-            <td class="tg-0pky" th:text="${d.forPay}">1112,3</td>
+            <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.returns.returnSum, 1, 'WHITESPACE', 2, 'COMMA')}">5</td>
+            <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.forPay, 1, 'WHITESPACE', 2, 'COMMA')}">1112,3</td>
+            <td>
+                <a href="details.html" th:href="@{/analytics/daily/details(date=${d.date})}">View</a>
+            </td>
         </tr>
         </tbody>
     </table>

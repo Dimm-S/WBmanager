@@ -9,11 +9,12 @@ import java.util.List;
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
+    //TODO переделять с явного указания месяца на последние n дней
     @Query(nativeQuery = true, value =
             "SELECT EXTRACT(DAY  FROM order_date) as day, " +
             "sum(price_with_disc) " +
             "FROM sales " +
-                    "WHERE EXTRACT(MONTH  FROM order_date) = 1.0 " +
+                    "WHERE EXTRACT(MONTH  FROM order_date) = 3.0 " +
                     "GROUP BY day " +
                     "ORDER BY day")
     List<Object[]> getSalesByDays();
@@ -21,26 +22,26 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     @Query(nativeQuery = true, value =
         "select cast(order_date as date) as date, count(price_with_disc), sum(price_with_disc)\n" +
                 "from sales\n" +
-                "where sale_id like 'S%' and cast(order_date as date) between '2023-01-16' and '2023-01-22'\n" +
+                "where sale_id like 'S%' and cast(order_date as date) between ?1 and ?2\n" +
                 "group by cast(order_date as date)\n" +
                 "order by date")
-    List<List<Object[]>> getSalesAndSum();
+    List<List<Object[]>> getSalesAndSum(LocalDate from, LocalDate to);
 
     @Query(nativeQuery = true, value =
             "select cast(order_date as date) as date, count(price_with_disc), sum(price_with_disc)\n" +
                     "from sales\n" +
-                    "where sale_id like 'R%' and cast(order_date as date) between '2023-01-16' and '2023-01-22'\n" +
+                    "where sale_id like 'R%' and cast(order_date as date) between ?1 and ?2\n" +
                     "group by cast(order_date as date)\n" +
                     "order by date")
-    List<List<Object[]>> getReturnsAndSum();
+    List<List<Object[]>> getReturnsAndSum(LocalDate from, LocalDate to);
 
     @Query(nativeQuery = true, value =
             "select cast(order_date as date) as date, sum(for_pay)\n" +
                     "from sales\n" +
-                    "where cast(order_date as date) between '2023-01-16' and '2023-01-22'\n" +
+                    "where cast(order_date as date) between ?1 and ?2\n" +
                     "group by cast(order_date as date)\n" +
                     "order by date")
-    List<List<Object[]>> getForPay();
+    List<List<Object[]>> getForPay(LocalDate from, LocalDate to);
 
     @Query(nativeQuery = true, value =
             "select name, " +
