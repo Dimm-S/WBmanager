@@ -1,5 +1,6 @@
 package com.dimm.wbmanager.sale;
 
+import com.dimm.wbmanager.order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -54,4 +55,14 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
                     "group by name " +
                     "order by sales_count desc")
     List<List<Object[]>> getSalesAndSumAndReturnsAndForPayByDate(LocalDate date);
+
+    @Query(nativeQuery = true, value = "SELECT * " +
+            "FROM sales " +
+            "ORDER BY id DESC LIMIT 1")
+    Sale getLast();
+
+    @Query(nativeQuery = true, value = "SELECT * " +
+            "FROM sales " +
+            "WHERE odid = ?1")
+    Sale findByOdid(Long odid);
 }
