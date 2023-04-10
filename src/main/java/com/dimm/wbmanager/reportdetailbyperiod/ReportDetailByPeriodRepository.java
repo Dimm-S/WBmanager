@@ -7,13 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ReportDetailByPeriodRepository extends JpaRepository <ReportDetailByPeriod, Long> {
+    /**
+     * Выручка помесячно
+     * @return
+     */
     @Query(nativeQuery = true, value =
             "select EXTRACT(MONTH FROM sale_dt) as month, " +
                     "extract(year from sale_dt) as year, " +
                     "sum(retail_amount) as amount, " +
                     "sum(ppvz_vw) as commission " +
             "from reportdetailbyperiod " +
-            "where quantity = 1 AND doc_type_name = 'Продажа' " +
+            "where quantity = 1 AND supplier_oper_name = 'Продажа' " +
             "group by quantity, month, year " +
             "order by year asc, month asc")
     List<Object[]> getAmountByMonth();
@@ -24,7 +28,7 @@ public interface ReportDetailByPeriodRepository extends JpaRepository <ReportDet
             "sum(retail_amount) as amount, " +
             "sum(ppvz_vw) as commission " +
             "from reportdetailbyperiod " +
-            "where quantity = 1 AND doc_type_name = 'Возврат' " +
+            "where quantity = 1 AND supplier_oper_name = 'Возврат' " +
             "group by quantity, month, year " +
             "order by year asc, month asc")
     List<Object[]> getReturns();

@@ -24,7 +24,7 @@ public interface OrderRepository extends JpaRepository <Order, Long> {
     за указанные даты */
     @Query(nativeQuery = true, value = "select " +
             "cast(order_date as date) as date, " +
-            "count(total_price), sum(total_price * discount_percent / 100) " +
+            "count(total_price), sum(total_price * (100 - discount_percent) / 100) " +
             "from orders " +
             "where cast(order_date as date) between ?1 and ?2 " +
             "group by cast(order_date as date) " +
@@ -33,7 +33,7 @@ public interface OrderRepository extends JpaRepository <Order, Long> {
 
     @Query(nativeQuery = true, value = "select " +
             "name, " +
-            "count(total_price), sum(total_price * discount_percent / 100) " +
+            "count(total_price), sum(total_price * (100 - discount_percent) / 100) " +
             "from orders as o " +
             "JOIN items i ON i.barcode = o.barcode " +
             "where cast(order_date as date) = ?1 " +
