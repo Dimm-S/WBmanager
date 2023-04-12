@@ -20,8 +20,11 @@ public interface OrderRepository extends JpaRepository <Order, Long> {
 //            "order by cast(ord.date as date)")
 //    List<OrdersQuantityAndSumByDateDto> getOrdersAndSum();
 
-    /** Количество заказов полное (без учёта отмен) и общая стоимость этих заказов (цена за минусом скидки),
-    за указанные даты */
+    /**
+     * Количество заказов полное (без учёта отмен) и общая стоимость этих заказов
+     * (цена за минусом скидки),
+     * за указанные даты с группировкой по датам
+     */
     @Query(nativeQuery = true, value = "select " +
             "cast(order_date as date) as date, " +
             "count(total_price), sum(total_price * (100 - discount_percent) / 100) " +
@@ -31,6 +34,11 @@ public interface OrderRepository extends JpaRepository <Order, Long> {
             "order by date")
     List<List<Object[]>> getOrdersAndSum(LocalDate from, LocalDate to);
 
+    /**
+     * Количество и сумма заказов за указанную дату с группировкой по наименованию
+     * @param date дата в формате YYYY-MM-DD
+     * @return
+     */
     @Query(nativeQuery = true, value = "select " +
             "name, " +
             "count(total_price), sum(total_price * (100 - discount_percent) / 100) " +
@@ -40,11 +48,32 @@ public interface OrderRepository extends JpaRepository <Order, Long> {
             "group by name")
     List<List<Object[]>> getOrdersAndSumByDate(LocalDate date);
 
+    /**
+     * Количество и сумма заказов за указанный месяц с группировкой по наименованию товаров
+     * @return
+     */
+    @Query(nativeQuery = true, value =
+            "select name, count(total_price), sum(total_price * (100 - discount_percent) / 100) " +
+            "from orders as o " +
+            "join items as i on o.barcode = i.barcode " +
+            "where EXTRACT(MONTH FROM order_date) = 3 " +
+            "group by name")
+    List<List<Object[]>> getMonthOrdersAndSumByItems();
+
+    /**
+     * Получение последней записи в таблице
+     * @return
+     */
     @Query(nativeQuery = true, value = "SELECT * " +
             "FROM orders " +
             "ORDER BY id DESC LIMIT 1")
     Order getLast();
 
+    /**
+     * Поиск по odid - уникальному идентификатору позиции заказа
+     * @param odid
+     * @return
+     */
     @Query(nativeQuery = true, value = "SELECT * " +
             "FROM orders " +
             "WHERE odid = ?1")

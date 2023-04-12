@@ -1,6 +1,7 @@
 package com.dimm.wbmanager.analytics;
 
 import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
+import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesForDashbordDto;
 import com.dimm.wbmanager.sale.SaleService;
@@ -9,11 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -60,5 +59,25 @@ public class AnalyticsController {
         List<OrdersAndSalesByDateDto> ordersAndSalesByDate = analyticsService.getOrdersAndSalesByDate(date);
         model.addAttribute("details", ordersAndSalesByDate);
         return "details";
+    }
+
+    /**
+     * Таблица за месяц с заказами, продажами, возвратами... по наименованиям товаров
+     * @return
+     */
+    @GetMapping("/month")
+    public String getMonthByItems(Model model) {
+        log.info("Запрошен энтпойнт GET:/analytics/month");
+        List<DetailedReportByMonthDto> detailedReportByMonthDtoList = analyticsService.getDetailedReportByMonth();
+        model.addAttribute("detailedmonth", detailedReportByMonthDtoList);
+        return "month";
+    }
+
+    @GetMapping("/monthgoogletable")
+    public String getMonthByItems2(Model model) {
+        log.info("Запрошен энтпойнт GET:/analytics/monthGoo");
+        List<List<Object>> detailedReportByMonthDtoList = analyticsService.getDetailedReportByMonthInObjects();
+        model.addAttribute("detailedmonth", detailedReportByMonthDtoList);
+        return "monthgoogletable";
     }
 }

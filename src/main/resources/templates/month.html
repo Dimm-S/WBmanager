@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-color:#93a1a1;border-spacing:0;}
+    .tg td{background-color:#fdf6e3;border-color:#93a1a1;border-style:solid;border-width:1px;color:#002b36;
+        font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 8px;word-break:normal;}
+    .tg th{background-color:#657b83;border-color:#93a1a1;border-style:solid;border-width:1px;color:#fdf6e3;
+        font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 8px;word-break:normal;}
+    .tg .tg-mpz2{background-color:#fdf6e3;border-color:#93a1a1;color:#002b36;text-align:left;vertical-align:top}
+    .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<body>
+
+<p>Март</p>
+
+<table class="tg">
+    <thead>
+    <tr>
+        <th class="tg-mpz2"></th>
+        <th class="tg-0pky" colspan="2">Заказы</th>
+        <th class="tg-0pky" colspan="2">Продажи</th>
+        <th class="tg-0pky" colspan="2">Возвраты</th>
+        <th class="tg-0pky" colspan="2">% возвратов</th>
+        <th class="tg-0pky" colspan="2">% выкупов</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="d : ${detailedmonth}">
+        <td class="tg-0pky" th:text="${d.name}" >Name</td>
+
+        <td class="tg-0pky" th:text="${d.ordersQuantity}">ordersQuantity</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.ordersSum, 1, 'WHITESPACE', 2, 'COMMA')}">ordersSum</td>
+
+        <td class="tg-0pky" th:text="${d.salesQuantity}">salesQuantity</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.salesSum, 1, 'WHITESPACE', 2, 'COMMA')}">salesSum</td>
+
+        <td class="tg-0pky" th:text="${d.returnsQuantity}">returnsQuantity</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.returnSum, 1, 'WHITESPACE', 2, 'COMMA')}">returnSum</td>
+
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.returnsPctQnt, 1, 'WHITESPACE', 2, 'COMMA')}">returnsPctQnt</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.returnsPctSum, 1, 'WHITESPACE', 2, 'COMMA')}">returnsPctSum</td>
+
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.buyoutPctInQnt, 1, 'WHITESPACE', 2, 'COMMA')}">buyoutPctInQnt</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.buyoutPctInSum, 1, 'WHITESPACE', 2, 'COMMA')}">buyoutPctInSum</td>
+
+
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

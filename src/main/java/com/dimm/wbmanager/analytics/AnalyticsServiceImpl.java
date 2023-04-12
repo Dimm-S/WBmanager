@@ -1,6 +1,7 @@
 package com.dimm.wbmanager.analytics;
 
 import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
+import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesForDashbordDto;
 import com.dimm.wbmanager.order.OrderService;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +61,41 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         List<List<Object[]>> orders = orderService.getOrdersAndSumByDate(date);
         List<List<Object[]>> salesAndReturnsAndForPay = saleService.getSalesAndSumAndReturnsAndForPayByDate(date);
         return analyticsMapper.mapToDetails(orders, salesAndReturnsAndForPay);
+    }
+
+    /**
+     * Детальный отчет за месяц: заказы, продажи, возвраты (для обычной таблицы)
+     * @return
+     */
+    @Override
+    public List<DetailedReportByMonthDto> getDetailedReportByMonth() {
+        List<List<Object[]>> orders = orderService.getMonthOrdersAndSumByItems();
+        List<List<Object[]>> sales = reportDetailByPeriodService.getMonthSalesAndBuybacksByItems();
+        return analyticsMapper.mapToDetailedMonthDto(orders, sales);
+    }
+
+    /**
+     * Детальный отчет за месяц: заказы, продажи, возвраты (для Google Charts)
+     * @return
+     */
+    @Override
+    public List<List<Object>> getDetailedReportByMonthInObjects() {
+        List<List<Object>> lists = new ArrayList<>();
+        List<DetailedReportByMonthDto> report = getDetailedReportByMonth();
+        for (DetailedReportByMonthDto r : report) {
+            lists.add(new ArrayList<>(Arrays.asList(r.getName(),
+                    r.getOrdersQuantity(),
+                    r.getOrdersSum(),
+                    r.getSalesQuantity(),
+                    r.getSalesSum(),
+                    r.getReturnsQuantity(),
+                    r.getReturnSum(),
+                    r.getReturnsPctQnt(),
+                    r.getReturnsPctSum(),
+                    r.getBuyoutPctInQnt(),
+                    r.getBuyoutPctInSum())));
+        }
+        return lists;
     }
 
     private static List<LocalDate> getDatesList() {

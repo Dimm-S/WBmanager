@@ -102,4 +102,9 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
         }
         return listlist;
     }
+
+    @Override
+    public List<List<Object[]>> getMonthSalesAndBuybacksByItems() {
+        return reportDetailByPeriodRepository.getMonthSalesAndBuybacksByItems();
+    }
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" th:inline="javascript">
+    google.charts.load('current', {'packages':['table']});
+
+    google.charts.setOnLoadCallback(drawTable);
+
+    function drawTable() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Наименование');
+      data.addColumn('number', 'Заказы, шт');
+      data.addColumn('number', 'Заказы, руб');
+      data.addColumn('number', 'Продажи, шт');
+      data.addColumn('number', 'Продажи, руб');
+      data.addColumn('number', 'Возвраты, шт');
+      data.addColumn('number', 'Возвраты, руб');
+      data.addColumn('number', '% возвратов, к шт');
+      data.addColumn('number', '% возвратов, к руб');
+      data.addColumn('number', '% выкупов, к шт');
+      data.addColumn('number', '% выкупов, к руб');
+
+      data.addRows(/*[[${detailedmonth}]]*/);
+
+      var table = new google.visualization.Table(document.getElementById('table_div'));
+
+      table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+    }
+  </script>
+</head>
+
+<style type="text/css">
+  .tg  {border-collapse:collapse;border-color:#93a1a1;border-spacing:0;}
+  .tg td{background-color:#fdf6e3;border-color:#93a1a1;border-style:solid;border-width:1px;color:#002b36;
+    font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 8px;word-break:normal;}
+  .tg th{background-color:#657b83;border-color:#93a1a1;border-style:solid;border-width:1px;color:#fdf6e3;
+    font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 8px;word-break:normal;}
+  .tg .tg-mpz2{background-color:#fdf6e3;border-color:#93a1a1;color:#002b36;text-align:left;vertical-align:top}
+  .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+
+<body>
+
+      <td><div id="table_div" style="width: 1500px; height: 1000px"></div></td>
+
+</body>
+</html>

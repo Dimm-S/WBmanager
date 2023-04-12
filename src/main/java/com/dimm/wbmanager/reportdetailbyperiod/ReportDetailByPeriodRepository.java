@@ -22,6 +22,10 @@ public interface ReportDetailByPeriodRepository extends JpaRepository <ReportDet
             "order by year asc, month asc")
     List<Object[]> getAmountByMonth();
 
+    /**
+     * Возвраты помесячно
+     * @return
+     */
     @Query(nativeQuery = true, value =
             "select EXTRACT(MONTH FROM sale_dt) as month, " +
             "extract(year from sale_dt) as year, " +
@@ -33,10 +37,19 @@ public interface ReportDetailByPeriodRepository extends JpaRepository <ReportDet
             "order by year asc, month asc")
     List<Object[]> getReturns();
 
-//    @Query(value = "SELECT new com.dimm.wbmanager.analytics.dto.AmountByMonthDto(rep.saleDt, sum(rep.retailAmount), sum(rep.ppvzVw)) " +
-//            "FROM ReportDetailByPeriod as rep " +
-//            "WHERE rep.quantity = 1 " +
-//            "GROUP BY rep.quantity, EXTRACT(MONTH from rep.saleDt) " +
-//            "ORDER BY EXTRACT(MONTH from rep.saleDt) asc")
-//    List<AmountByMonthDto> getAmountByMonth();
+    /**
+     * Продажи и возвраты за месяц с группировкой по наименованиям товаров
+     * @return
+     */
+    @Query(nativeQuery = true, value =
+            "select name, " +
+            "sum(case when supplier_oper_name = 'Продажа' then 1 else 0 end) as sales_count," +
+            "sum(case when supplier_oper_name = 'Продажа' then retail_amount else 0 end) as sales_sum, " +
+            "sum(case when supplier_oper_name = 'Возврат' then 1 else 0 end) as returns_count, " +
+            "sum(case when supplier_oper_name = 'Возврат' then retail_amount else 0 end) as returns " +
+            "from reportdetailbyperiod as r " +
+            "join items as i on r.barcode = i.barcode " +
+            "where EXTRACT(MONTH FROM sale_dt) = 3 and quantity = 1 " +
+            "group by name")
+    List<List<Object[]>> getMonthSalesAndBuybacksByItems();
 }
