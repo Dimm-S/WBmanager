@@ -1,6 +1,7 @@
 package com.dimm.wbmanager.reportdetailbyperiod;
 
 import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
+import com.dimm.wbmanager.order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -52,4 +53,13 @@ public interface ReportDetailByPeriodRepository extends JpaRepository <ReportDet
             "where EXTRACT(MONTH FROM sale_dt) = 3 and quantity = 1 " +
             "group by name")
     List<List<Object[]>> getMonthSalesAndBuybacksByItems();
+
+    /**
+     * Получение последней записи в таблице
+     * @return
+     */
+    @Query(nativeQuery = true, value = "SELECT * " +
+            "FROM reportdetailbyperiod " +
+            "ORDER BY id DESC LIMIT 1")
+    ReportDetailByPeriod getLast();
 }

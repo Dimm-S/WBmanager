@@ -4,6 +4,7 @@ import com.dimm.wbmanager.item.Item;
 import com.dimm.wbmanager.item.ItemService;
 import com.dimm.wbmanager.order.dto.OrderInputDto;
 import com.dimm.wbmanager.updatestat.UpdateStatService;
+import com.dimm.wbmanager.utils.Token;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final UpdateStatService updateStatService;
     private final ItemService itemService;
-    private final static String API_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
-            ".eyJhY2Nlc3NJRCI6IjRmYTI1YzU3LTRmZDMtNDI4MC1hZDI4LTBmYmRhNzUwYmIzMSJ9" +
-            ".71_50subAYWjteFgH0hViHwT2ov6blHTCgTaWl6KznQ";
+    private final Token token;
 
     @Override
     public void updateTable() throws IOException, InterruptedException {
@@ -84,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
 
         WebClient client = WebClient.builder()
                 .baseUrl("https://statistics-api.wildberries.ru/api/v1/supplier/orders?dateFrom=" + date.plusSeconds(1))
-                .defaultHeader("Authorization", API_TOKEN)
+                .defaultHeader("Authorization", token.getTOKEN())
                 .defaultHeader("Content-Type", "application/json")
                 .build();
 
