@@ -1,9 +1,1 @@
-ну самое простое это собрать инфо в разрезе каждого месяца из отчетов по реализации:
-выручка - количество продаж - логистика - комиссия.
-И тут отфильтровать возвраты по количеству-выручке-логистике и комиссии
-
-select date_part('month', sale_dt) as month, sum(retail_amount) as amount, quantity, sum(delivery_rub) as delivery, sum(ppvz_vw_nds) as comission
-from reportdetailbyperiod
-where quantity = 1
-group by quantity, date_part('month', sale_dt)
-order by month asc;
+Система внутренней аналитики продавца на маркетплейсе Wildberries
