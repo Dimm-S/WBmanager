@@ -31,6 +31,11 @@ public class AnalyticsController {
         return "amount";
     }
 
+    /**
+     * Дашборд
+     * @param model
+     * @return
+     */
     @GetMapping("/amountchart")
     public String getAmountChartByMonth(Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/amountchart");
@@ -45,6 +50,11 @@ public class AnalyticsController {
         return "amountchart";
     }
 
+    /**
+     * Таблица с заказами, продажами, возвратами за последние n дней (группировка по датам)
+     * @param model
+     * @return
+     */
     @GetMapping("/daily")
     public String getOrdersAndSalesAndReturnsByDates(Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/daily");
@@ -53,6 +63,12 @@ public class AnalyticsController {
         return "daily";
     }
 
+    /**
+     * Таблица с заказами, продажами, возвратами за указанную дату (группировка по наименованиям товаров)
+     * @param date
+     * @param model
+     * @return
+     */
     @GetMapping("/daily/details")
     public String getOrdersAndSalesAndReturnsByName(@RequestParam String date, Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/daily/details на дату {}", date);
@@ -73,6 +89,11 @@ public class AnalyticsController {
         return "month";
     }
 
+    /**
+     * Таблица за месяц с заказами, продажами, возвратами... по наименованиям товаров (таблица GoogleCharts)
+     * @param model
+     * @return
+     */
     @GetMapping("/monthgoogletable")
     public String getMonthByItems2(Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/monthGoo");

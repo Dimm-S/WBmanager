@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +69,30 @@ public class AnalyticsServiceImpl implements AnalyticsService{
     public List<DetailedReportByMonthDto> getDetailedReportByMonth() {
         List<List<Object[]>> orders = orderService.getMonthOrdersAndSumByItems();
         List<List<Object[]>> sales = reportDetailByPeriodService.getMonthSalesAndBuybacksByItems();
-        return analyticsMapper.mapToDetailedMonthDto(orders, sales);
+        List<DetailedReportByMonthDto> list = analyticsMapper.mapToDetailedMonthDto(orders, sales);
+
+        DetailedReportByMonthDto total = new DetailedReportByMonthDto("ИТОГО",
+                0, 0D, 0, 0F, 0, 0F,
+                0D, 0D, 0D, 0D);
+        for (DetailedReportByMonthDto r : list) {
+            total.setOrdersQuantity(total.getOrdersQuantity() + r.getOrdersQuantity());
+            total.setOrdersSum(total.getOrdersSum() + r.getOrdersSum());
+            total.setSalesQuantity(total.getSalesQuantity() + r.getSalesQuantity());
+            total.setSalesSum(total.getSalesSum() + r.getSalesSum());
+            total.setReturnsQuantity(total.getReturnsQuantity() + r.getReturnsQuantity());
+            total.setReturnSum(total.getReturnSum() + r.getReturnSum());
+            total.setReturnsPctQnt(total.getReturnsPctQnt() + r.getReturnsPctQnt());
+            total.setReturnsPctSum(total.getReturnsPctSum() + r.getReturnSum());
+            total.setBuyoutPctInQnt(total.getBuyoutPctInQnt() + r.getBuyoutPctInQnt());
+            total.setBuyoutPctInSum(total.getBuyoutPctInSum() + r.getBuyoutPctInSum());
+        }
+        total.setReturnsPctQnt(total.getReturnsPctQnt() / list.size());
+        total.setReturnsPctSum(total.getReturnsPctSum() / list.size());
+        total.setBuyoutPctInQnt(total.getBuyoutPctInQnt() / list.size());
+        total.setBuyoutPctInSum(total.getBuyoutPctInSum() / list.size());
+
+        list.add(total);
+        return list;
     }
 
     /**

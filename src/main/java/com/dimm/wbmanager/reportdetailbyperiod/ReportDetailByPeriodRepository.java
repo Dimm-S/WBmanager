@@ -50,7 +50,7 @@ public interface ReportDetailByPeriodRepository extends JpaRepository <ReportDet
             "sum(case when supplier_oper_name = 'Возврат' then retail_amount else 0 end) as returns " +
             "from reportdetailbyperiod as r " +
             "join items as i on r.barcode = i.barcode " +
-            "where EXTRACT(MONTH FROM sale_dt) = 3 and quantity = 1 " +
+            "where EXTRACT(MONTH FROM sale_dt) = 3 and quantity = 1 AND srid NOT IN (SELECT * from selfbuyouts) " +
             "group by name")
     List<List<Object[]>> getMonthSalesAndBuybacksByItems();
 

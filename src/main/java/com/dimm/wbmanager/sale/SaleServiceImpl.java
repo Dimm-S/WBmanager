@@ -85,6 +85,9 @@ public class SaleServiceImpl implements SaleService {
         return saleRepository.getSalesAndSumAndReturnsAndForPayByDate(LocalDate.parse(date));
     }
 
+    /**
+     * Автообновление таблицы sales (каждые полчаса)
+     */
     @Scheduled(initialDelay = 180000, fixedDelay = 1800000)
     public void salesAutoUpdate() {
         log.info("Выполняется обновление продаж");

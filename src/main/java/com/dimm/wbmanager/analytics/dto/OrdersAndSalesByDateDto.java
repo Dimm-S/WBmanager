@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrdersAndSalesByDateDto {
     private String name;
-    Integer ordersQuantity;
-    Double ordersSum;
-    Integer salesQuantity;
-    Float salesSum;
-    Integer returnsQuantity;
-    Float returnSum;
+    private Integer ordersQuantity;
+    private Double ordersSum;
+    private Integer salesQuantity;
+    private Float salesSum;
+    private Integer returnsQuantity;
+    private Float returnSum;
     private Float forPay;
 }
