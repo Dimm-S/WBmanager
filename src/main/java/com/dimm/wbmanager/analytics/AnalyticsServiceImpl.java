@@ -121,14 +121,9 @@ public class AnalyticsServiceImpl implements AnalyticsService{
 
     private static List<LocalDate> getDatesList() {
         List<LocalDate> dateList = new ArrayList<>();
-        dateList.add(LocalDate.now().minusDays(6));
-        dateList.add(LocalDate.now().minusDays(5));
-        dateList.add(LocalDate.now().minusDays(4));
-        dateList.add(LocalDate.now().minusDays(3));
-        dateList.add(LocalDate.now().minusDays(2));
-        dateList.add(LocalDate.now().minusDays(1));
-        dateList.add(LocalDate.now());
-
+        for (int i = 6; i >= 0; i--) {
+            dateList.add(LocalDate.now().minusDays(i));
+        }
         return dateList;
     }
 }
