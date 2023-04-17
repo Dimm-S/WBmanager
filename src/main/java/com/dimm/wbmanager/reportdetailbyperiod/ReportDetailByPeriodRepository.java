@@ -1,61 +1,63 @@
 package com.dimm.wbmanager.reportdetailbyperiod;
 
-import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
-import com.dimm.wbmanager.order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ReportDetailByPeriodRepository extends JpaRepository <ReportDetailByPeriod, Long> {
+public interface ReportDetailByPeriodRepository extends JpaRepository<ReportDetailByPeriod, Long> {
     /**
      * Выручка помесячно
+     *
      * @return
      */
     @Query(nativeQuery = true, value =
-            "select EXTRACT(MONTH FROM sale_dt) as month, " +
-                    "extract(year from sale_dt) as year, " +
-                    "sum(retail_amount) as amount, " +
-                    "sum(ppvz_vw) as commission " +
-            "from reportdetailbyperiod " +
-            "where quantity = 1 AND supplier_oper_name = 'Продажа' " +
-            "group by quantity, month, year " +
-            "order by year asc, month asc")
+            "SELECT EXTRACT(MONTH FROM sale_dt) AS MONTH, " +
+                    "EXTRACT(YEAR FROM sale_dt) AS YEAR, " +
+                    "SUM(retail_amount) AS amount, " +
+                    "SUM(ppvz_vw) AS commission " +
+                    "FROM reportdetailbyperiod " +
+                    "WHERE quantity = 1 AND supplier_oper_name = 'Продажа' " +
+                    "GROUP BY quantity, MONTH, YEAR " +
+                    "ORDER BY YEAR ASC, MONTH ASC")
     List<Object[]> getAmountByMonth();
 
     /**
      * Возвраты помесячно
+     *
      * @return
      */
     @Query(nativeQuery = true, value =
-            "select EXTRACT(MONTH FROM sale_dt) as month, " +
-            "extract(year from sale_dt) as year, " +
-            "sum(retail_amount) as amount, " +
-            "sum(ppvz_vw) as commission " +
-            "from reportdetailbyperiod " +
-            "where quantity = 1 AND supplier_oper_name = 'Возврат' " +
-            "group by quantity, month, year " +
-            "order by year asc, month asc")
+            "SELECT EXTRACT(MONTH FROM sale_dt) AS MONTH, " +
+                    "EXTRACT(YEAR FROM sale_dt) AS YEAR, " +
+                    "SUM(retail_amount) AS amount, " +
+                    "SUM(ppvz_vw) AS commission " +
+                    "FROM reportdetailbyperiod " +
+                    "WHERE quantity = 1 AND supplier_oper_name = 'Возврат' " +
+                    "GROUP BY quantity, MONTH, YEAR " +
+                    "ORDER BY YEAR ASC, MONTH ASC")
     List<Object[]> getReturns();
 
     /**
      * Продажи и возвраты за месяц с группировкой по наименованиям товаров
+     *
      * @return
      */
     @Query(nativeQuery = true, value =
-            "select name, " +
-            "sum(case when supplier_oper_name = 'Продажа' then 1 else 0 end) as sales_count," +
-            "sum(case when supplier_oper_name = 'Продажа' then retail_amount else 0 end) as sales_sum, " +
-            "sum(case when supplier_oper_name = 'Возврат' then 1 else 0 end) as returns_count, " +
-            "sum(case when supplier_oper_name = 'Возврат' then retail_amount else 0 end) as returns " +
-            "from reportdetailbyperiod as r " +
-            "join items as i on r.barcode = i.barcode " +
-            "where EXTRACT(MONTH FROM sale_dt) = 3 and quantity = 1 AND srid NOT IN (SELECT * from selfbuyouts) " +
-            "group by name")
-    List<List<Object[]>> getMonthSalesAndBuybacksByItems();
+            "SELECT name, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Продажа' THEN 1 ELSE 0 END) AS sales_count," +
+                    "SUM(CASE WHEN supplier_oper_name = 'Продажа' THEN retail_amount ELSE 0 END) AS sales_sum, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN 1 ELSE 0 END) AS returns_count, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN retail_amount ELSE 0 END) AS returns " +
+                    "FROM reportdetailbyperiod AS r " +
+                    "JOIN items AS i ON r.barcode = i.barcode " +
+                    "WHERE EXTRACT(MONTH FROM sale_dt) = ?1 AND quantity = 1 AND srid NOT IN (SELECT * FROM selfbuyouts) " +
+                    "GROUP BY name")
+    List<List<Object[]>> getMonthSalesAndBuybacksByItems(Integer month);
 
     /**
      * Получение последней записи в таблице
+     *
      * @return
      */
     @Query(nativeQuery = true, value = "SELECT * " +

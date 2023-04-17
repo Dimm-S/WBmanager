@@ -1,5 +1,6 @@
 package com.dimm.wbmanager.reportdetailbyperiod;
 
+import com.dimm.wbmanager.Month;
 import com.dimm.wbmanager.analytics.AnalyticsMapper;
 import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
 import com.dimm.wbmanager.reportdetailbyperiod.dto.ReportDetailByPeriodInputDto;
@@ -92,8 +93,13 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
         return listlist;
     }
 
+    /**
+     * Продажи и возвраты за месяц с группировкой по наименованиям товаров
+     * @param month месяц
+     * @return
+     */
     @Override
-    public List<List<Object[]>> getMonthSalesAndBuybacksByItems() {
-        return reportDetailByPeriodRepository.getMonthSalesAndBuybacksByItems();
+    public List<List<Object[]>> getMonthSalesAndBuybacksByItems(String month) {
+        return reportDetailByPeriodRepository.getMonthSalesAndBuybacksByItems(Month.valueOf(month).ordinal() + 1);
     }
 }

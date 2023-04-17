@@ -51,7 +51,7 @@ public class AnalyticsServiceImpl implements AnalyticsService{
 
     /**
      * Заказы и продажи на указанную дату
-     * @param date
+     * @param date дата отчёта
      * @return
      */
     @Override
@@ -63,12 +63,13 @@ public class AnalyticsServiceImpl implements AnalyticsService{
 
     /**
      * Детальный отчет за месяц: заказы, продажи, возвраты (для обычной таблицы)
+     * @param month наименование месяца
      * @return
      */
     @Override
-    public List<DetailedReportByMonthDto> getDetailedReportByMonth() {
-        List<List<Object[]>> orders = orderService.getMonthOrdersAndSumByItems();
-        List<List<Object[]>> sales = reportDetailByPeriodService.getMonthSalesAndBuybacksByItems();
+    public List<DetailedReportByMonthDto> getDetailedReportByMonth(String month) {
+        List<List<Object[]>> orders = orderService.getMonthOrdersAndSumByItems(month);
+        List<List<Object[]>> sales = reportDetailByPeriodService.getMonthSalesAndBuybacksByItems(month);
         List<DetailedReportByMonthDto> list = analyticsMapper.mapToDetailedMonthDto(orders, sales);
 
         DetailedReportByMonthDto total = new DetailedReportByMonthDto("ИТОГО",
@@ -102,7 +103,7 @@ public class AnalyticsServiceImpl implements AnalyticsService{
     @Override
     public List<List<Object>> getDetailedReportByMonthInObjects() {
         List<List<Object>> lists = new ArrayList<>();
-        List<DetailedReportByMonthDto> report = getDetailedReportByMonth();
+        List<DetailedReportByMonthDto> report = getDetailedReportByMonth("МАРТ");  // TODO временно
         for (DetailedReportByMonthDto r : report) {
             lists.add(new ArrayList<>(Arrays.asList(r.getName(),
                     r.getOrdersQuantity(),

@@ -10,50 +10,50 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     //TODO переделять с явного указания месяца на последние n дней
     @Query(nativeQuery = true, value =
-            "SELECT EXTRACT(DAY  FROM order_date) as day, " +
-            "sum(price_with_disc) " +
-            "FROM sales " +
+            "SELECT EXTRACT(DAY  FROM order_date) AS day, " +
+                    "SUM(price_with_disc) " +
+                    "FROM sales " +
                     "WHERE EXTRACT(MONTH  FROM order_date) = 3.0 " +
                     "GROUP BY day " +
                     "ORDER BY day")
     List<Object[]> getSalesByDays();
 
     @Query(nativeQuery = true, value =
-        "select cast(order_date as date) as date, count(price_with_disc), sum(price_with_disc)\n" +
-                "from sales\n" +
-                "where sale_id like 'S%' and cast(order_date as date) between ?1 and ?2\n" +
-                "group by cast(order_date as date)\n" +
-                "order by date")
+            "SELECT CAST(order_date AS date) AS date, COUNT(price_with_disc), SUM(price_with_disc)\n" +
+                    "FROM sales\n" +
+                    "WHERE sale_id LIKE 'S%' AND CAST(order_date AS date) BETWEEN ?1 AND ?2\n" +
+                    "GROUP BY CAST(order_date AS date)\n" +
+                    "ORDER BY date")
     List<List<Object[]>> getSalesAndSum(LocalDate from, LocalDate to);
 
     @Query(nativeQuery = true, value =
-            "select cast(order_date as date) as date, count(price_with_disc), sum(price_with_disc)\n" +
-                    "from sales\n" +
-                    "where sale_id like 'R%' and cast(order_date as date) between ?1 and ?2\n" +
-                    "group by cast(order_date as date)\n" +
-                    "order by date")
+            "SELECT CAST(order_date AS date) AS date, COUNT(price_with_disc), SUM(price_with_disc)\n" +
+                    "FROM sales\n" +
+                    "WHERE sale_id LIKE 'R%' AND CAST(order_date AS date) BETWEEN ?1 AND ?2\n" +
+                    "GROUP BY CAST(order_date AS date)\n" +
+                    "ORDER BY date")
     List<List<Object[]>> getReturnsAndSum(LocalDate from, LocalDate to);
 
     @Query(nativeQuery = true, value =
-            "select cast(order_date as date) as date, sum(for_pay)\n" +
-                    "from sales\n" +
-                    "where cast(order_date as date) between ?1 and ?2\n" +
-                    "group by cast(order_date as date)\n" +
-                    "order by date")
+            "SELECT CAST(order_date AS date) AS date, SUM(for_pay)\n" +
+                    "FROM sales\n" +
+                    "WHERE CAST(order_date AS date) BETWEEN ?1 AND ?2\n" +
+                    "GROUP BY CAST(order_date AS date)\n" +
+                    "ORDER BY date")
     List<List<Object[]>> getForPay(LocalDate from, LocalDate to);
 
     @Query(nativeQuery = true, value =
-            "select name, " +
-            "sum(case when sale_id like 'S%' then 1 else 0 end) as sales_count, " +
-            "sum(case when sale_id like 'S%' then price_with_disc else 0 end) as sales_sum, " +
-            "sum(case when sale_id like 'R%' then 1 else 0 end) as returns_count, " +
-            "sum(case when sale_id like 'R%' then price_with_disc else 0 end) as returns_sum, " +
-            "sum(for_pay) as for_pay " +
-            "from sales as s " +
-            "join items as i on s.barcode = i.barcode " +
-                    "where cast(order_date as date) = ?1 " +
-                    "group by name " +
-                    "order by sales_count desc")
+            "SELECT name, " +
+                    "SUM(CASE WHEN sale_id LIKE 'S%' THEN 1 ELSE 0 END) AS sales_count, " +
+                    "SUM(CASE WHEN sale_id LIKE 'S%' THEN price_with_disc ELSE 0 END) AS sales_sum, " +
+                    "SUM(CASE WHEN sale_id LIKE 'R%' THEN 1 ELSE 0 END) AS returns_count, " +
+                    "SUM(CASE WHEN sale_id LIKE 'R%' THEN price_with_disc ELSE 0 END) AS returns_sum, " +
+                    "SUM(for_pay) AS for_pay " +
+                    "FROM sales AS s " +
+                    "JOIN items AS i ON s.barcode = i.barcode " +
+                    "WHERE CAST(order_date AS date) = ?1 " +
+                    "GROUP BY name " +
+                    "ORDER BY sales_count DESC")
     List<List<Object[]>> getSalesAndSumAndReturnsAndForPayByDate(LocalDate date);
 
     @Query(nativeQuery = true, value = "SELECT * " +

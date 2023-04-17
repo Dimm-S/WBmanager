@@ -79,13 +79,16 @@ public class AnalyticsController {
 
     /**
      * Таблица за месяц с заказами, продажами, возвратами... по наименованиям товаров
+     * @param month название месяца
+     * @param model
      * @return
      */
     @GetMapping("/month")
-    public String getMonthByItems(Model model) {
+    public String getMonthByItems(@RequestParam(name = "month", required = true) String month, Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/month");
-        List<DetailedReportByMonthDto> detailedReportByMonthDtoList = analyticsService.getDetailedReportByMonth();
+        List<DetailedReportByMonthDto> detailedReportByMonthDtoList = analyticsService.getDetailedReportByMonth(month);
         model.addAttribute("detailedmonth", detailedReportByMonthDtoList);
+        model.addAttribute("monthname", month);
         return "month";
     }
 

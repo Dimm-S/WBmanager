@@ -13,5 +13,5 @@ public interface ReportDetailByPeriodService {
 
     List<List<Object>> getAmountByMonthForChart();
 
-    List<List<Object[]>> getMonthSalesAndBuybacksByItems();
+    List<List<Object[]>> getMonthSalesAndBuybacksByItems(String month);
 }

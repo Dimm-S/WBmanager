@@ -1,13 +1,12 @@
 package com.dimm.wbmanager.order;
 
-import com.dimm.wbmanager.order.dto.OrdersQuantityAndSumByDateDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface OrderRepository extends JpaRepository <Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
     //todo Несоответствие типов нужному ДТО
 //    @Query(value = "SELECT new com.dimm.wbmanager.order.dto.OrdersQuantityAndSumByDateDto(" +
@@ -25,43 +24,46 @@ public interface OrderRepository extends JpaRepository <Order, Long> {
      * (цена за минусом скидки),
      * за указанные даты с группировкой по датам
      */
-    @Query(nativeQuery = true, value = "select " +
-            "cast(order_date as date) as date, " +
-            "count(total_price), sum(total_price * (100 - discount_percent) / 100) " +
-            "from orders " +
-            "where cast(order_date as date) between ?1 and ?2 " +
-            "group by cast(order_date as date) " +
-            "order by date")
+    @Query(nativeQuery = true, value = "SELECT " +
+            "CAST(order_date AS date) AS date, " +
+            "COUNT(total_price), SUM(total_price * (100 - discount_percent) / 100) " +
+            "FROM orders " +
+            "WHERE CAST(order_date AS date) BETWEEN ?1 AND ?2 " +
+            "GROUP BY CAST(order_date AS date) " +
+            "ORDER BY date")
     List<List<Object[]>> getOrdersAndSum(LocalDate from, LocalDate to);
 
     /**
      * Количество и сумма заказов за указанную дату с группировкой по наименованию
+     *
      * @param date дата в формате YYYY-MM-DD
      * @return
      */
-    @Query(nativeQuery = true, value = "select " +
+    @Query(nativeQuery = true, value = "SELECT " +
             "name, " +
-            "count(total_price), sum(total_price * (100 - discount_percent) / 100) " +
-            "from orders as o " +
+            "COUNT(total_price), SUM(total_price * (100 - discount_percent) / 100) " +
+            "FROM orders AS o " +
             "JOIN items i ON i.barcode = o.barcode " +
-            "where cast(order_date as date) = ?1 " +
-            "group by name")
+            "WHERE CAST(order_date AS date) = ?1 " +
+            "GROUP BY name")
     List<List<Object[]>> getOrdersAndSumByDate(LocalDate date);
 
     /**
      * Количество и сумма заказов за указанный месяц с группировкой по наименованию товаров
+     * @param month месяц
      * @return
      */
     @Query(nativeQuery = true, value =
-            "select name, count(total_price), sum(total_price * (100 - discount_percent) / 100) " +
-            "from orders as o " +
-            "join items as i on o.barcode = i.barcode " +
-            "where EXTRACT(MONTH FROM order_date) = 3 " +
-            "group by name")
-    List<List<Object[]>> getMonthOrdersAndSumByItems();
+            "SELECT name, COUNT(total_price), SUM(total_price * (100 - discount_percent) / 100) " +
+                    "FROM orders AS o " +
+                    "JOIN items AS i ON o.barcode = i.barcode " +
+                    "WHERE EXTRACT(MONTH FROM order_date) = ?1 " +
+                    "GROUP BY name")
+    List<List<Object[]>> getMonthOrdersAndSumByItems(Integer month);
 
     /**
      * Получение последней записи в таблице
+     *
      * @return
      */
     @Query(nativeQuery = true, value = "SELECT * " +
@@ -71,6 +73,7 @@ public interface OrderRepository extends JpaRepository <Order, Long> {
 
     /**
      * Поиск по odid - уникальному идентификатору позиции заказа
+     *
      * @param odid
      * @return
      */

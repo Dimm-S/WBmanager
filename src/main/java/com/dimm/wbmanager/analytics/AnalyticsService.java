@@ -17,7 +17,7 @@ public interface AnalyticsService {
 
     List<OrdersAndSalesByDateDto> getOrdersAndSalesByDate(String date);
 
-    List<DetailedReportByMonthDto> getDetailedReportByMonth();
+    List<DetailedReportByMonthDto> getDetailedReportByMonth(String month);
 
     List<List<Object>> getDetailedReportByMonthInObjects();
 }

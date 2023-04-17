@@ -1,5 +1,6 @@
 package com.dimm.wbmanager.order;
 
+import com.dimm.wbmanager.Month;
 import com.dimm.wbmanager.item.Item;
 import com.dimm.wbmanager.item.ItemService;
 import com.dimm.wbmanager.order.dto.OrderInputDto;
@@ -68,9 +69,14 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.getOrdersAndSumByDate(LocalDate.parse(date));
     }
 
+    /**
+     * Количество и сумма заказов за указанный месяц с группировкой по наименованию товаров
+     * @param month месяц
+     * @return
+     */
     @Override
-    public List<List<Object[]>> getMonthOrdersAndSumByItems() {
-        return orderRepository.getMonthOrdersAndSumByItems();
+    public List<List<Object[]>> getMonthOrdersAndSumByItems(String month) {
+        return orderRepository.getMonthOrdersAndSumByItems(Month.valueOf(month).ordinal() + 1);
     }
 
     /** Обновление базы заказов по расписанию */
