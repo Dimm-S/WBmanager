@@ -87,10 +87,10 @@ public class AnalyticsServiceImpl implements AnalyticsService{
             total.setBuyoutPctInQnt(total.getBuyoutPctInQnt() + r.getBuyoutPctInQnt());
             total.setBuyoutPctInSum(total.getBuyoutPctInSum() + r.getBuyoutPctInSum());
         }
-        total.setReturnsPctQnt(total.getReturnsPctQnt() / list.size());
-        total.setReturnsPctSum(total.getReturnsPctSum() / list.size());
-        total.setBuyoutPctInQnt(total.getBuyoutPctInQnt() / list.size());
-        total.setBuyoutPctInSum(total.getBuyoutPctInSum() / list.size());
+        total.setReturnsPctQnt((double)total.getReturnsQuantity() / (double)total.getSalesQuantity() * 100);
+        total.setReturnsPctSum((double) (total.getReturnSum() / total.getSalesSum() * 100));
+        total.setBuyoutPctInQnt((double) total.getSalesQuantity() / (double) total.getOrdersQuantity() * 100);
+        total.setBuyoutPctInSum((double) total.getSalesSum() / total.getOrdersSum() * 100);
 
         list.add(total);
         return list;
