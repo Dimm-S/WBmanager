@@ -89,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
 
         WebClient client = WebClient.builder()
                 .baseUrl("https://statistics-api.wildberries.ru/api/v1/supplier/orders?dateFrom=" + date.plusSeconds(1))
-                .defaultHeader("Authorization", token.getTOKEN())
+                .defaultHeader("Authorization", token.getToken())
                 .defaultHeader("Content-Type", "application/json")
                 .build();
 

@@ -97,7 +97,7 @@ public class SaleServiceImpl implements SaleService {
 
         WebClient client = WebClient.builder()
                 .baseUrl("https://statistics-api.wildberries.ru/api/v1/supplier/sales?dateFrom=" + date.plusSeconds(1))
-                .defaultHeader("Authorization", token.getTOKEN())
+                .defaultHeader("Authorization", token.getToken())
                 .defaultHeader("Content-Type", "application/json")
                 .build();
 

@@ -38,7 +38,7 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
         WebClient client = WebClient.builder()
                 .baseUrl("https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod" +
                         "?dateFrom=" + dateFrom.toLocalDate() + "&dateto=" + dateTo.toLocalDate())
-                .defaultHeader("Authorization", token.getTOKEN())
+                .defaultHeader("Authorization", token.getToken())
                 .defaultHeader("Content-Type", "application/json")
                 .build();
 
