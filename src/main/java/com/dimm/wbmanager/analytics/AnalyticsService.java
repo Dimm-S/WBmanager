@@ -3,7 +3,7 @@ package com.dimm.wbmanager.analytics;
 import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
 import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
-import com.dimm.wbmanager.analytics.dto.OrdersAndSalesForDashbordDto;
+import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
 
 import java.util.List;
 
@@ -13,7 +13,9 @@ public interface AnalyticsService {
 
     List<List<Object>> getAmountByMonthForChart();
 
-    List<OrdersAndSalesForDashbordDto> getOrdersAndSalesAndReturnsByDates();
+    List<OrdersSalesReturnsForPayDto> getOrdersAndSalesAndReturnsByDates();
+
+    List<OrdersSalesReturnsForPayDto> getOrdersSalesReturnsForPayByMonth(String month);
 
     List<OrdersAndSalesByDateDto> getOrdersAndSalesByDate(String date);
 

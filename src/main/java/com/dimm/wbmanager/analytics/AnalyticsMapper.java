@@ -4,7 +4,7 @@ import com.dimm.wbmanager.Month;
 import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
 import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
-import com.dimm.wbmanager.analytics.dto.OrdersAndSalesForDashbordDto;
+import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,45 +34,45 @@ public class AnalyticsMapper {
         return list;
     }
 
-    public List<OrdersAndSalesForDashbordDto> mapForDayliTable(
+    public List<OrdersSalesReturnsForPayDto> mapForDayliTable(
             List<LocalDate> datesList,
             List<List<Object[]>> orders,
             List<List<Object[]>> sales,
             List<List<Object[]>> returns,
             List<List<Object[]>> forPay) {
 
-        List<OrdersAndSalesForDashbordDto> list = new ArrayList<>();
+        List<OrdersSalesReturnsForPayDto> list = new ArrayList<>();
         for (LocalDate date : datesList) {
-            OrdersAndSalesForDashbordDto dto = new OrdersAndSalesForDashbordDto();
+            OrdersSalesReturnsForPayDto dto = new OrdersSalesReturnsForPayDto();
             dto.setDate(date);
             for (List<Object[]> o : orders) {
                 if (Objects.equals(o.get(0)[0].toString(), date.toString())) {
-                    dto.setOrders(new OrdersAndSalesForDashbordDto.Orders(
+                    dto.setOrders(new OrdersSalesReturnsForPayDto.Orders(
                             ((BigInteger) o.get(1)[0]).intValue(), (Double) o.get(2)[0]));
                 }
             }
             if (dto.getOrders() == null) {
-                dto.setOrders(new OrdersAndSalesForDashbordDto.Orders(0, 0.0));
+                dto.setOrders(new OrdersSalesReturnsForPayDto.Orders(0, 0.0));
             }
 
             for (List<Object[]> s : sales) {
                 if (Objects.equals(s.get(0)[0].toString(), date.toString())) {
-                    dto.setSales(new OrdersAndSalesForDashbordDto.Sales(
+                    dto.setSales(new OrdersSalesReturnsForPayDto.Sales(
                             ((BigInteger) s.get(1)[0]).intValue(), (Float) s.get(2)[0]));
                 }
             }
             if (dto.getSales() == null) {
-                dto.setSales(new OrdersAndSalesForDashbordDto.Sales(0, 0.0F));
+                dto.setSales(new OrdersSalesReturnsForPayDto.Sales(0, 0.0F));
             }
 
             for (List<Object[]> r : returns) {
                 if (Objects.equals(r.get(0)[0].toString(), date.toString())) {
-                    dto.setReturns(new OrdersAndSalesForDashbordDto.Returns(
+                    dto.setReturns(new OrdersSalesReturnsForPayDto.Returns(
                             ((BigInteger) r.get(1)[0]).intValue(), (Float) r.get(2)[0]));
                 }
             }
             if (dto.getReturns() == null) {
-                dto.setReturns(new OrdersAndSalesForDashbordDto.Returns(0, 0.0F));
+                dto.setReturns(new OrdersSalesReturnsForPayDto.Returns(0, 0.0F));
             }
 
             for (List<Object[]> f : forPay) {

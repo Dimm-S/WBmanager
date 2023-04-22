@@ -3,7 +3,7 @@ package com.dimm.wbmanager.analytics;
 import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
 import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
-import com.dimm.wbmanager.analytics.dto.OrdersAndSalesForDashbordDto;
+import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
 import com.dimm.wbmanager.sale.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class AnalyticsController {
         log.info("Запрошен энтпойнт GET:/analytics/amountchart");
         List<List<Object>> amountList = analyticsService.getAmountByMonthForChart();
         List<List<Object>> saleList = saleService.getSalesByDays();
-        List<OrdersAndSalesForDashbordDto> ordersAndSales = analyticsService.getOrdersAndSalesAndReturnsByDates();
+        List<OrdersSalesReturnsForPayDto> ordersAndSales = analyticsService.getOrdersAndSalesAndReturnsByDates();
 
         model.addAttribute("amountchart", amountList);
         model.addAttribute("saleschart", saleList);
@@ -58,9 +58,23 @@ public class AnalyticsController {
     @GetMapping("/daily")
     public String getOrdersAndSalesAndReturnsByDates(Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/daily");
-        List<OrdersAndSalesForDashbordDto> ordersAndSales = analyticsService.getOrdersAndSalesAndReturnsByDates();
+        List<OrdersSalesReturnsForPayDto> ordersAndSales = analyticsService.getOrdersAndSalesAndReturnsByDates();
         model.addAttribute("orsales", ordersAndSales);
         return "daily";
+    }
+
+    /**
+     * Таблица с заказами, продажами, возвратами за указанный месяц (группировка по датам)
+     * @param month
+     * @param model
+     * @return
+     */
+    @GetMapping("/dailymonth")
+    public String getOrdersAndSalesAndReturnsForMonth(@RequestParam String month, Model model) {
+        log.info("Запрошен энтпойнт GET:/analytics/daily");
+        List<OrdersSalesReturnsForPayDto> ordersAndSales = analyticsService.getOrdersSalesReturnsForPayByMonth(month);
+        model.addAttribute("orsales", ordersAndSales);
+        return "dailymonth";
     }
 
     /**

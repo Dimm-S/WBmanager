@@ -8,13 +8,25 @@
     <p><a href="/analytics/amount">Выручка</a></p>
     <p><a href="/analytics/amountchart">Дашборд</a></p>
     <p><a href="/analytics/daily">По дням</a></p>
-    <p><a href="/analytics/month">Месяц</a></p>
+
+    <p>Месяц по товарам</p>
     <form action="/analytics/month" method="get">
         <select name="month">
             <option value="СЕНТЯБРЬ">СЕНТЯБРЬ</option>
             <option value="ОКТЯБРЬ">ОКТЯБРЬ</option>
             <option value="НОЯБРЬ">НОЯБРЬ</option>
             <option value="ДЕКАБРЬ">ДЕКАБРЬ</option>
+            <option value="ЯНВАРЬ">ЯНВАРЬ</option>
+            <option value="ФЕВРАЛЬ">ФЕВРАЛЬ</option>
+            <option value="МАРТ">МАРТ</option>
+            <option value="АПРЕЛЬ">АПРЕЛЬ</option>
+        </select>
+        <button type="submit">Отправить</button>
+    </form>
+
+    <p>Месяц по дням</p>
+    <form action="/analytics/dailymonth" method="get">
+        <select name="month">
             <option value="ЯНВАРЬ">ЯНВАРЬ</option>
             <option value="ФЕВРАЛЬ">ФЕВРАЛЬ</option>
             <option value="МАРТ">МАРТ</option>

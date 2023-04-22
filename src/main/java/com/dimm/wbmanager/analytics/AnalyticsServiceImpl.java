@@ -1,9 +1,10 @@
 package com.dimm.wbmanager.analytics;
 
+import com.dimm.wbmanager.Month;
 import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
 import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
-import com.dimm.wbmanager.analytics.dto.OrdersAndSalesForDashbordDto;
+import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
 import com.dimm.wbmanager.order.OrderService;
 import com.dimm.wbmanager.reportdetailbyperiod.ReportDetailByPeriodService;
 import com.dimm.wbmanager.sale.SaleService;
@@ -11,9 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,12 +41,32 @@ public class AnalyticsServiceImpl implements AnalyticsService{
      * @return
      */
     @Override
-    public List<OrdersAndSalesForDashbordDto> getOrdersAndSalesAndReturnsByDates() {
-        List<LocalDate> datesList = getDatesList();
+    public List<OrdersSalesReturnsForPayDto> getOrdersAndSalesAndReturnsByDates() {
+        List<LocalDate> datesList = getDatesList(LocalDate.now().minusDays(6), LocalDate.now());
         List<List<Object[]>> orders = orderService.getOrdersAndSum(datesList.get(0), datesList.get(6));
         List<List<Object[]>> sales = saleService.getSalesAndSum(datesList.get(0), datesList.get(6));
         List<List<Object[]>> returns = saleService.getReturnsAndSum(datesList.get(0), datesList.get(6));
         List<List<Object[]>> forPay = saleService.getForPay(datesList.get(0), datesList.get(6));
+
+        return analyticsMapper.mapForDayliTable(
+                datesList, orders, sales, returns, forPay);
+    }
+
+    /**
+     * Заказы и продажи за месяц
+     * @param month
+     * @return
+     */
+    @Override
+    public List<OrdersSalesReturnsForPayDto> getOrdersSalesReturnsForPayByMonth(String month) {
+        LocalDate dateFrom = LocalDate.parse("2023-0" + (Month.valueOf(month).ordinal() + 1) + "-01"); //TODO исправить месяц
+        LocalDate dateTo = (LocalDate) TemporalAdjusters.lastDayOfMonth().adjustInto(dateFrom);
+        List<LocalDate> datesList = getDatesList(dateFrom, dateTo);
+
+        List<List<Object[]>> orders = orderService.getOrdersAndSum(dateFrom, dateTo);
+        List<List<Object[]>> sales = saleService.getSalesAndSum(dateFrom, dateTo);
+        List<List<Object[]>> returns = saleService.getReturnsAndSum(dateFrom, dateTo);
+        List<List<Object[]>> forPay = saleService.getForPay(dateFrom, dateTo);
 
         return analyticsMapper.mapForDayliTable(
                 datesList, orders, sales, returns, forPay);
@@ -120,11 +143,8 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return lists;
     }
 
-    private static List<LocalDate> getDatesList() {
-        List<LocalDate> dateList = new ArrayList<>();
-        for (int i = 6; i >= 0; i--) {
-            dateList.add(LocalDate.now().minusDays(i));
-        }
-        return dateList;
+    private static List<LocalDate> getDatesList(LocalDate dateFrom, LocalDate dateTo) {
+        return dateFrom.datesUntil(dateTo.plusDays(1))
+                .collect(Collectors.toList());
     }
 }

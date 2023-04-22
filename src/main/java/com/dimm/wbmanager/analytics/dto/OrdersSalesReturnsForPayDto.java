@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrdersAndSalesForDashbordDto {
+public class OrdersSalesReturnsForPayDto {
     private LocalDate date;
     private Orders orders;
     private Sales sales;
