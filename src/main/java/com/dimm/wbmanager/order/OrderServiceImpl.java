@@ -84,7 +84,13 @@ public class OrderServiceImpl implements OrderService {
     public void ordersAutoUpdate() {
         log.info("Выполняется обновление заказов");
         Order lastOrder = orderRepository.getLast();
-        LocalDateTime date = lastOrder.getLastChangeDate();
+        LocalDateTime date;
+        try {
+             date = lastOrder.getLastChangeDate();
+        } catch (NullPointerException exception) {
+            date = LocalDateTime.parse("2022-01-01T00:00:00");
+        }
+
         log.info("Последняя доступная дата {} ", date);
 
         WebClient client = WebClient.builder()

@@ -2,8 +2,6 @@ package com.dimm.wbmanager.sale;
 
 import com.dimm.wbmanager.item.Item;
 import com.dimm.wbmanager.item.ItemService;
-import com.dimm.wbmanager.order.Order;
-import com.dimm.wbmanager.order.dto.OrderInputDto;
 import com.dimm.wbmanager.sale.dto.SaleInputDto;
 import com.dimm.wbmanager.updatestat.UpdateStatService;
 import com.dimm.wbmanager.utils.Token;
@@ -92,7 +90,13 @@ public class SaleServiceImpl implements SaleService {
     public void salesAutoUpdate() {
         log.info("Выполняется обновление продаж");
         Sale lastSale = saleRepository.getLast();
-        LocalDateTime date = lastSale.getLastChangeDate();
+        LocalDateTime date;
+        try {
+            date = lastSale.getLastChangeDate();
+        } catch (NullPointerException exception) {
+            date = LocalDateTime.parse("2022-01-01T00:00:00");
+        }
+
         log.info("Последняя доступная дата {} ", date);
 
         WebClient client = WebClient.builder()
@@ -112,9 +116,10 @@ public class SaleServiceImpl implements SaleService {
             log.info("Нет новых записей");
         } else {
             for (SaleInputDto dto : salesDtoList) {
-                if (checkOdid(dto.getOdid())) { //если запись с таким odid уже есть, то её необходимо обновить (через удаление)
+                if (checkSaleRec(dto.getOdid(), dto.getSaleID())) { //если запись с таким odid и saleId уже есть, то её необходимо обновить (через удаление)
                     log.info("Обновление записи {}", dto.getOdid());
-                    saleRepository.deleteById(saleRepository.findByOdid(dto.getOdid()).getId()); //удаление записи с существующим odid
+                    saleRepository.deleteById(
+                            saleRepository.findByOdidAndSaleId(dto.getOdid(), dto.getSaleID()).getId()); //удаление записи с существующим odid
                     saleRepository.save(saleMapper.mapInputToSale(dto)); //добавление новой записи
                     updateStatService.addRecord("sales", true, dto.getOdid()); //запись в статистику
                 } else {
@@ -138,9 +143,15 @@ public class SaleServiceImpl implements SaleService {
     /**
      * Проверка существования заказа
      * @param odid уникальный идентификатор позиции заказа
+     * @param saleId Уникальный идентификатор продажи/возврата
      * @return true или false
      */
-    private Boolean checkOdid(Long odid) {
-        return saleRepository.findByOdid(odid) != null;
+    public Boolean checkSaleRec(Long odid, String saleId) {
+        try {
+            Sale sale = saleRepository.findByOdidAndSaleId(odid, saleId);
+            return sale.getOdid() == odid && sale.getSaleID().equals(saleId) && !saleId.equals("0");
+        } catch (NullPointerException exception) {
+            return false;
+        }
     }
 }
