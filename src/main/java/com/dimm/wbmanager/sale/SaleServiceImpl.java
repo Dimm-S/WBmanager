@@ -142,7 +142,8 @@ public class SaleServiceImpl implements SaleService {
 
     /**
      * Проверка существования заказа
-     * @param odid уникальный идентификатор позиции заказа
+     *
+     * @param odid   уникальный идентификатор позиции заказа
      * @param saleId Уникальный идентификатор продажи/возврата
      * @return true или false
      */

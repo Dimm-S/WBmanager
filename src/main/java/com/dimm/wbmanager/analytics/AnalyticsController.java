@@ -33,6 +33,7 @@ public class AnalyticsController {
 
     /**
      * Дашборд
+     *
      * @param model
      * @return
      */
@@ -52,6 +53,7 @@ public class AnalyticsController {
 
     /**
      * Таблица с заказами, продажами, возвратами за последние n дней (группировка по датам)
+     *
      * @param model
      * @return
      */
@@ -65,6 +67,7 @@ public class AnalyticsController {
 
     /**
      * Таблица с заказами, продажами, возвратами за указанный месяц (группировка по датам)
+     *
      * @param month
      * @param model
      * @return
@@ -79,6 +82,7 @@ public class AnalyticsController {
 
     /**
      * Таблица с заказами, продажами, возвратами за указанную дату (группировка по наименованиям товаров)
+     *
      * @param date
      * @param model
      * @return
@@ -93,6 +97,7 @@ public class AnalyticsController {
 
     /**
      * Таблица за месяц с заказами, продажами, возвратами... по наименованиям товаров
+     *
      * @param month название месяца
      * @param model
      * @return
@@ -108,6 +113,7 @@ public class AnalyticsController {
 
     /**
      * Таблица за месяц с заказами, продажами, возвратами... по наименованиям товаров (таблица GoogleCharts)
+     *
      * @param model
      * @return
      */
