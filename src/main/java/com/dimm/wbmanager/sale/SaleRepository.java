@@ -63,6 +63,6 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * " +
             "FROM sales " +
-            "WHERE odid = ?1")
-    Sale findByOdid(Long odid);
+            "WHERE odid = ?1 AND sale_id = ?2")
+    Sale findByOdidAndSaleId(Long odid, String sale_id);
 }
