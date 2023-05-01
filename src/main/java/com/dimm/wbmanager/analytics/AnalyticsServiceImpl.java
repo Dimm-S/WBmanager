@@ -81,7 +81,22 @@ public class AnalyticsServiceImpl implements AnalyticsService{
     public List<OrdersAndSalesByDateDto> getOrdersAndSalesByDate(String date) {
         List<List<Object[]>> orders = orderService.getOrdersAndSumByDate(date);
         List<List<Object[]>> salesAndReturnsAndForPay = saleService.getSalesAndSumAndReturnsAndForPayByDate(date);
-        return analyticsMapper.mapToDetails(orders, salesAndReturnsAndForPay);
+        List<OrdersAndSalesByDateDto> list = analyticsMapper.mapToDetails(orders, salesAndReturnsAndForPay);
+
+        OrdersAndSalesByDateDto total = new OrdersAndSalesByDateDto("ИТОГО",
+                0, 0D, 0, 0F, 0, 0F, 0F);
+        for (OrdersAndSalesByDateDto r : list) {
+            total.setOrdersQuantity(total.getOrdersQuantity() + r.getOrdersQuantity());
+            total.setOrdersSum(total.getOrdersSum() + r.getOrdersSum());
+            total.setSalesQuantity(total.getSalesQuantity() + r.getSalesQuantity());
+            total.setSalesSum(total.getSalesSum() + r.getSalesSum());
+            total.setReturnsQuantity(total.getReturnsQuantity() + r.getReturnsQuantity());
+            total.setReturnSum(total.getReturnSum() + r.getReturnSum());
+            total.setForPay(total.getForPay() + r.getForPay());
+        }
+
+        list.add(total);
+        return list;
     }
 
     /**
