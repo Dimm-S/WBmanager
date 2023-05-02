@@ -3,14 +3,74 @@
 <head>
     <title>Стартовая страница</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 160px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #424242;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav p {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 21px;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav form {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-left: 160px; /* Same as the width of the sidenav */
+            font-size: 28px; /* Increased text to enable scrolling */
+            padding: 0px 10px;
+            height: 1200px;
+            width: 100%;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+    </style>
 </head>
-<body>
-    <p><a href="/analytics/amount">Выручка</a></p>
-    <p><a href="/analytics/amountchart">Дашборд</a></p>
-    <p><a href="/analytics/daily">По дням</a></p>
+<!-- Side navigation -->
+<div class="sidenav">
+    <a href="/analytics/amount" target="frame">Выручка</a>
+    <a href="/analytics/amountchart" target="frame">Дашборд</a>
+    <a href="/analytics/daily" target="frame">По дням</a>
 
     <p>Месяц по товарам</p>
-    <form action="/analytics/month" method="get">
+    <form action="/analytics/month" target="frame" method="get">
         <select name="month">
             <option value="СЕНТЯБРЬ">СЕНТЯБРЬ</option>
             <option value="ОКТЯБРЬ">ОКТЯБРЬ</option>
@@ -25,7 +85,7 @@
     </form>
 
     <p>Месяц по дням</p>
-    <form action="/analytics/dailymonth" method="get">
+    <form action="/analytics/dailymonth" target="frame" method="get">
         <select name="month">
             <option value="ЯНВАРЬ">ЯНВАРЬ</option>
             <option value="ФЕВРАЛЬ">ФЕВРАЛЬ</option>
@@ -34,7 +94,13 @@
         </select>
         <button type="submit">Отправить</button>
     </form>
-    <p><a href="/analytics/monthgoogletable">Месяц (Google Charts)</a></p>
+    <p><a href="/analytics/monthgoogletable" target="frame" >Месяц (Google Charts)</a></p>
+</div>
 
-</body>
+<!-- Page content -->
+<div class="main">
+    <iframe src="start.html" height="100%" width="100%" style="border:none;" name="frame"></iframe>
+</div>
+
 </html>
+
