@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
@@ -18,5 +20,14 @@ public class ItemServiceImpl implements ItemService {
     public void saveNewItem(Item item) {
         itemRepository.save(item);
         statService.addRecord("items", false, 0L);
+    }
+
+    /**
+     * Получение списка товаров
+     * @return List of Items
+     */
+    @Override
+    public List<Item> getAllItems() {
+        return itemRepository.findAll();
     }
 }

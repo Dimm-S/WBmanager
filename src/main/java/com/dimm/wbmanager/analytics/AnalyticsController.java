@@ -4,6 +4,7 @@ import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
 import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
 import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
+import com.dimm.wbmanager.item.Item;
 import com.dimm.wbmanager.sale.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -123,5 +124,13 @@ public class AnalyticsController {
         List<List<Object>> detailedReportByMonthDtoList = analyticsService.getDetailedReportByMonthInObjects();
         model.addAttribute("detailedmonth", detailedReportByMonthDtoList);
         return "monthgoogletable";
+    }
+
+    @GetMapping("/items")
+    public String getAllItems(Model model) {
+        log.info("Запрошен энтпойнт GET:/analytics/items");
+        List<Item> items = analyticsService.getAllItems();
+        model.addAttribute("items", items);
+        return "items";
     }
 }

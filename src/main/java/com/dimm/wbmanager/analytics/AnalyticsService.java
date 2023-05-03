@@ -4,6 +4,7 @@ import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
 import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
 import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
+import com.dimm.wbmanager.item.Item;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface AnalyticsService {
     List<DetailedReportByMonthDto> getDetailedReportByMonth(String month);
 
     List<List<Object>> getDetailedReportByMonthInObjects();
+
+    List<Item> getAllItems();
 }

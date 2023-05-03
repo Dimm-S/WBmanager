@@ -5,6 +5,8 @@ import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
 import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
 import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
 import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
+import com.dimm.wbmanager.item.Item;
+import com.dimm.wbmanager.item.ItemService;
 import com.dimm.wbmanager.order.OrderService;
 import com.dimm.wbmanager.reportdetailbyperiod.ReportDetailByPeriodService;
 import com.dimm.wbmanager.sale.SaleService;
@@ -25,6 +27,7 @@ public class AnalyticsServiceImpl implements AnalyticsService{
     private final OrderService orderService;
     private final SaleService saleService;
     private final AnalyticsMapper analyticsMapper;
+    private final ItemService itemService;
 
     @Override
     public List<AmountByMonthDto> getAmountByMonthForTable() {
@@ -156,6 +159,11 @@ public class AnalyticsServiceImpl implements AnalyticsService{
                     r.getBuyoutPctInSum())));
         }
         return lists;
+    }
+
+    @Override
+    public List<Item> getAllItems() {
+        return itemService.getAllItems();
     }
 
     private static List<LocalDate> getDatesList(LocalDate dateFrom, LocalDate dateTo) {
