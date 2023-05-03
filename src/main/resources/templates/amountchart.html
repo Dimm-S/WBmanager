@@ -72,6 +72,10 @@
         font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 8px;word-break:normal;}
     .tg .tg-mpz2{background-color:#fdf6e3;border-color:#93a1a1;color:#002b36;text-align:left;vertical-align:top}
     .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+
+    th, td {
+        padding: 10px;
+    }
 </style>
 
 
@@ -79,7 +83,7 @@
     <table class="columns">
         <tr>
             <td><div id="curve_chart" style="width: 900px; height: 500px"></div></td>
-            <td><div id="area_chart" style="width: 900px; height: 500px;"></div></td>
+<!--            <td><div id="area_chart" style="width: 900px; height: 500px;"></div></td>-->
         </tr>
         <tr>
             <td><div id="table_div" style="width: 900px; height: 200px"></div></td>
@@ -88,32 +92,53 @@
 
         </tr>
     </table>
-    <table class="tg">
-        <thead>
-        <tr>
-            <th class="tg-mpz2"></th>
-            <th class="tg-0pky" colspan="2">Заказы</th>
-            <th class="tg-0pky" colspan="2">Продажи</th>
-            <th class="tg-0pky" colspan="2">Возвраты</th>
-            <th class="tg-0pky">К выплате</th>
-            <th class="tg-0pky">Подробно</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="d : ${orsales}">
-            <td class="tg-0pky" th:text="${d.date}">16-01-2023</td>
-            <td class="tg-0pky" th:text="${d.orders.ordersQuantity}">10</td>
-            <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.orders.ordersSum, 1, 'WHITESPACE', 2, 'COMMA')}">1135,12</td>
-            <td class="tg-0pky" th:text="${d.sales.salesQuantity}">5</td>
-            <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.sales.salesSum, 1, 'WHITESPACE', 2, 'COMMA')}">5</td>
-            <td class="tg-0pky" th:text="${d.returns.returnsQuantity}">5</td>
-            <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.returns.returnSum, 1, 'WHITESPACE', 2, 'COMMA')}">5</td>
-            <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.forPay, 1, 'WHITESPACE', 2, 'COMMA')}">1112,3</td>
-            <td>
-                <a href="details.html" th:href="@{/analytics/daily/details(date=${d.date})}">View</a>
-            </td>
-        </tr>
-        </tbody>
+
+    <table style="width: 900px; height: 500px">
+    <tr>
+        <td>
+            <table class="tg" style="width: 600px; height: 500px">
+                <thead>
+                <tr>
+                    <th class="tg-mpz2"></th>
+                    <th class="tg-0pky" colspan="2">Заказы</th>
+                    <th class="tg-0pky" colspan="2">Продажи</th>
+                    <th class="tg-0pky" colspan="2">Возвраты</th>
+                    <th class="tg-0pky">К выплате</th>
+                    <th class="tg-0pky">Подробно</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="d : ${orsales}">
+                    <td class="tg-0pky" th:text="${d.date}">16-01-2023</td>
+                    <td class="tg-0pky" th:text="${d.orders.ordersQuantity}">10</td>
+                    <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.orders.ordersSum, 1, 'WHITESPACE', 2, 'COMMA')}">1135,12</td>
+                    <td class="tg-0pky" th:text="${d.sales.salesQuantity}">5</td>
+                    <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.sales.salesSum, 1, 'WHITESPACE', 2, 'COMMA')}">5</td>
+                    <td class="tg-0pky" th:text="${d.returns.returnsQuantity}">5</td>
+                    <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.returns.returnSum, 1, 'WHITESPACE', 2, 'COMMA')}">5</td>
+                    <td class="tg-0pky" th:text="${#numbers.formatDecimal(d.forPay, 1, 'WHITESPACE', 2, 'COMMA')}">1112,3</td>
+                    <td>
+                        <a href="details.html" th:href="@{/analytics/daily/details(date=${d.date})}">View</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+            <table class="tg" style="width: 300px; height: 500px">
+                <thead>
+                <tr>
+                    <th class="tg-0pky">Нераспонанные товары (штрих-коды)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="b: ${barcodes}">
+                    <td class="tg-0pky" th:text="${b}">barcode</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
     </table>
 </body>
 </html>

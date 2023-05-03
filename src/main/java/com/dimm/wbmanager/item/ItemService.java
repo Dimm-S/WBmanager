@@ -7,4 +7,6 @@ public interface ItemService {
     void saveNewItem(Item item);
 
     List<Item> getAllItems();
+
+    List<Item> getUnidItems();
 }

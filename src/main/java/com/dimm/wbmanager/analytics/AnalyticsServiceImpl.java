@@ -166,6 +166,14 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return itemService.getAllItems();
     }
 
+    @Override
+    public List<String> getUnindItemsBarcodes() {
+        List<Item> items = itemService.getUnidItems();
+        return items.stream()
+                .map(Item :: getBarcode)
+                .collect(Collectors.toList());
+    }
+
     private static List<LocalDate> getDatesList(LocalDate dateFrom, LocalDate dateTo) {
         return dateFrom.datesUntil(dateTo.plusDays(1))
                 .collect(Collectors.toList());

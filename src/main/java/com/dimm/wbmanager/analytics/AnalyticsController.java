@@ -44,10 +44,12 @@ public class AnalyticsController {
         List<List<Object>> amountList = analyticsService.getAmountByMonthForChart();
         List<List<Object>> saleList = saleService.getSalesByDays();
         List<OrdersSalesReturnsForPayDto> ordersAndSales = analyticsService.getOrdersAndSalesAndReturnsByDates();
+        List<String> unidBarcodes = analyticsService.getUnindItemsBarcodes();
 
         model.addAttribute("amountchart", amountList);
-        model.addAttribute("saleschart", saleList);
+        model.addAttribute("saleschart", saleList); //TODO отключено
         model.addAttribute("orsales", ordersAndSales);
+        model.addAttribute("barcodes", unidBarcodes);
 
         return "amountchart";
     }
@@ -112,7 +114,7 @@ public class AnalyticsController {
         return "month";
     }
 
-    /**
+    /** //TODO отключено!
      * Таблица за месяц с заказами, продажами, возвратами... по наименованиям товаров (таблица GoogleCharts)
      *
      * @param model

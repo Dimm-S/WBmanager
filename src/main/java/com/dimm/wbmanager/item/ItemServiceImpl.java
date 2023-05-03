@@ -30,4 +30,13 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> getAllItems() {
         return itemRepository.findAll();
     }
+
+    /**
+     * Получение списка товаров без наименования
+     * @return List товаров с наименованием Unidentified item
+     */
+    @Override
+    public List<Item> getUnidItems() {
+        return itemRepository.getUnidItems();
+    }
 }
