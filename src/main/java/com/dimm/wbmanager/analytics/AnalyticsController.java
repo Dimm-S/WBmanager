@@ -135,4 +135,12 @@ public class AnalyticsController {
         model.addAttribute("items", items);
         return "items";
     }
+
+    @GetMapping("/brands")
+    public String getAllBrands(Model model) {
+        log.info("Запрошен энтпойнт GET:/analytics/brands");
+        model.addAttribute("underconstruction");
+        return "underconstruction";
+    }
+
 }
