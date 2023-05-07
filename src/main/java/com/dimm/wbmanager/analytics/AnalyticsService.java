@@ -27,4 +27,8 @@ public interface AnalyticsService {
     List<Item> getAllItems();
 
     List<String> getUnindItemsBarcodes();
+
+    List<List<Object>> getBrandsDistr();
+
+    List<List<Object>> getTopItems();
 }

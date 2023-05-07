@@ -43,10 +43,14 @@ public class AnalyticsController {
         log.info("Запрошен энтпойнт GET:/analytics/amountchart");
         List<List<Object>> amountList = analyticsService.getAmountByMonthForChart();
         List<List<Object>> saleList = saleService.getSalesByDays();
+        List<List<Object>> itemsList = analyticsService.getTopItems();
+        List<List<Object>> brandsList = analyticsService.getBrandsDistr();
         List<OrdersSalesReturnsForPayDto> ordersAndSales = analyticsService.getOrdersAndSalesAndReturnsByDates();
         List<String> unidBarcodes = analyticsService.getUnindItemsBarcodes();
 
         model.addAttribute("amountchart", amountList);
+        model.addAttribute("itemschart", itemsList);
+        model.addAttribute("brandschart", brandsList);
         model.addAttribute("saleschart", saleList); //TODO отключено
         model.addAttribute("orsales", ordersAndSales);
         model.addAttribute("barcodes", unidBarcodes);

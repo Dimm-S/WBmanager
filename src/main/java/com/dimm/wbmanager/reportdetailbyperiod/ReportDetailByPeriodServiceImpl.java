@@ -77,13 +77,15 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
 
     @Override
     public List<List<Object>> getAmountByMonthForChart() {
-        List<Object[]> list = reportDetailByPeriodRepository.getAmountByMonth();
+        List<Object[]> sales = reportDetailByPeriodRepository.getAmountByMonth();
         List<Object[]> returns = reportDetailByPeriodRepository.getReturns();
         List<Object[]> amount = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {  //TODO возможен разный размер list-ов
-            Object[] array = {list.get(i)[0], list.get(i)[1],
-                    (Float) list.get(i)[2] - (Float) returns.get(i)[2],
-                    (Float) list.get(i)[3] - (Float) returns.get(i)[3]};
+        for (int i = 0; i < sales.size(); i++) {  //TODO возможен разный размер list-ов
+            Object[] array = {sales.get(i)[0], sales.get(i)[1],
+                    (Float) sales.get(i)[2] - (Float) returns.get(i)[2],
+                    -((Float) sales.get(i)[3] - (Float) returns.get(i)[3]),
+                    (-((Float) sales.get(i)[3] - (Float) returns.get(i)[3])) /
+                            ((Float) sales.get(i)[2] - (Float) returns.get(i)[2]) * 100};
             amount.add(array);
         }
         List<List<Object>> listlist = new ArrayList<>();
@@ -101,5 +103,25 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
     @Override
     public List<List<Object[]>> getMonthSalesAndBuybacksByItems(String month) {
         return reportDetailByPeriodRepository.getMonthSalesAndBuybacksByItems(Month.valueOf(month).ordinal() + 1);
+    }
+
+    @Override
+    public List<List<Object>> getBrandsDistr() {
+        List<Object[]> brands = reportDetailByPeriodRepository.getBrandsDistr();
+        List<List<Object>> listlist = new ArrayList<>();
+        for (Object[] l : brands) {
+            listlist.add(reportDetailByPeriodMapper.mapArrayToList(l));
+        }
+        return listlist;
+    }
+
+    @Override
+    public List<List<Object>> getTopItems() {
+        List<Object[]> items = reportDetailByPeriodRepository.getTopItems();
+        List<List<Object>> listlist = new ArrayList<>();
+        for (Object[] l : items) {
+            listlist.add(reportDetailByPeriodMapper.mapArrayToList(l));
+        }
+        return listlist;
     }
 }

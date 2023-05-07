@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -77,5 +79,12 @@ public class ReportDetailByPeriodMapper {
                 dto.getSrid(),
                 null
         );
+    }
+
+    public List<Object> mapArrayToList(Object[] object) {
+        List<Object> list = new ArrayList<>();
+        list.add(object[0]);
+        list.add(object[1]);
+        return list;
     }
 }

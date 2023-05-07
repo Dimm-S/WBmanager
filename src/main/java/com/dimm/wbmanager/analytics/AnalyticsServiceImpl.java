@@ -174,6 +174,16 @@ public class AnalyticsServiceImpl implements AnalyticsService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<List<Object>> getBrandsDistr() {
+        return reportDetailByPeriodService.getBrandsDistr();
+    }
+
+    @Override
+    public List<List<Object>> getTopItems() {
+        return reportDetailByPeriodService.getTopItems();
+    }
+
     private static List<LocalDate> getDatesList(LocalDate dateFrom, LocalDate dateTo) {
         return dateFrom.datesUntil(dateTo.plusDays(1))
                 .collect(Collectors.toList());

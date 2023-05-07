@@ -51,7 +51,8 @@ public interface ReportDetailByPeriodRepository extends JpaRepository<ReportDeta
                     "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN retail_amount ELSE 0 END) AS returns " +
                     "FROM reportdetailbyperiod AS r " +
                     "JOIN items AS i ON r.barcode = i.barcode " +
-                    "WHERE EXTRACT(MONTH FROM sale_dt) = ?1 AND quantity = 1 AND srid NOT IN (SELECT * FROM selfbuyouts) " +
+                    "WHERE EXTRACT(MONTH FROM sale_dt) = ?1 AND quantity = 1 " +
+                    "AND srid NOT IN (SELECT * FROM selfbuyouts) " +
                     "GROUP BY name")
     List<List<Object[]>> getMonthSalesAndBuybacksByItems(Integer month);
 
@@ -64,4 +65,20 @@ public interface ReportDetailByPeriodRepository extends JpaRepository<ReportDeta
             "FROM reportdetailbyperiod " +
             "ORDER BY id DESC LIMIT 1")
     ReportDetailByPeriod getLast();
+
+    @Query(nativeQuery = true, value = "SELECT " +
+            "brand_name, SUM(retail_amount) AS amount " +
+            "FROM public.reportdetailbyperiod " +
+            "WHERE quantity = 1 AND supplier_oper_name = 'Продажа' " +
+            "GROUP BY brand_name")
+    List<Object[]> getBrandsDistr();
+
+    @Query(nativeQuery = true, value = "SELECT " +
+            "name, SUM(retail_amount) AS amount " +
+            "FROM public.reportdetailbyperiod as r " +
+            "JOIN items AS i ON r.nm_id = i.nm_id " +
+            "WHERE quantity = 1 AND supplier_oper_name = 'Продажа' " +
+            "GROUP BY name " +
+            "ORDER BY amount DESC")
+    List<Object[]> getTopItems();
 }

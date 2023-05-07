@@ -31,6 +31,7 @@ public class AnalyticsMapper {
                 (String.valueOf(object[0]).length()) - 2, 10) - 1]));
         list.add(object[2]);
         list.add(object[3]);
+        list.add(object[4]);
         return list;
     }
 

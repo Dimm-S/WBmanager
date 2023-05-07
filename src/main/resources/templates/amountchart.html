@@ -7,45 +7,55 @@
         google.charts.load('current', {'packages':['bar']});
         google.charts.load('current', {'packages':['table']});
 
-        google.charts.setOnLoadCallback(drawLineChart);
-        google.charts.setOnLoadCallback(drawAreaChart);
+        google.charts.setOnLoadCallback(drawVisualization);
+        google.charts.setOnLoadCallback(drawDonutChart);
+        google.charts.setOnLoadCallback(drawChart);
         google.charts.setOnLoadCallback(drawTable);
         google.charts.setOnLoadCallback(drawOrdersTable);
 
-        function drawLineChart() {
+        function drawVisualization() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Месяц');
             data.addColumn('number', 'Выручка');
             data.addColumn('number', 'Комиссия');
+            data.addColumn('number', '%');
             data.addRows(/*[[${amountchart}]]*/);
 
-
-                var options = {
-                title: 'Выручка по месяцам',
-                // curveType: 'function',
+            var options = {
+                title : 'Выручка, комиссия и % комиссии',
                 legend: { position: 'bottom' },
-                lineWidth: 3
+                vAxis: {title: 'руб.'},
+                hAxis: {title: 'Месяц'},
+                seriesType: 'bars',
+                series: {2: {type: 'line', targetAxisIndex:1}},
+                vAxes: {
+                    1: {
+                        title:'%',
+                        textStyle: {color: 'black'}
+                    }
+                },
+                isStacked: true
             };
 
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
+            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
             chart.draw(data, options);
         }
 
-        function drawAreaChart() {
+        function drawDonutChart() {
+
             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'День');
-            data.addColumn('number', 'Продажи');
-            data.addRows(/*[[${saleschart}]]*/);
+            data.addColumn('string', 'Наименование');
+            data.addColumn('number', 'руб.');
+            data.addRows(/*[[${itemschart}]]*/);
 
 
             var options = {
-                title: 'Продажи по дням',
-                hAxis: {title: 'Март',  titleTextStyle: {color: '#333'}}, //TODO месяц
-                // vAxis: {minValue: 0}
+                title: 'Топ товаров по наименованиям, руб.',
+                pieHole: 0.4,
+                backgroundColor: '#9d9d9d'
             };
 
-            var chart = new google.visualization.AreaChart(document.getElementById('area_chart'));
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
 
             chart.draw(data, options);
         }
@@ -55,11 +65,30 @@
             data.addColumn('string', 'Месяц');
             data.addColumn('number', 'Выручка');
             data.addColumn('number', 'Комиссия');
+            data.addColumn('number', '%');
             data.addRows(/*[[${amountchart}]]*/);
 
             var table = new google.visualization.Table(document.getElementById('table_div'));
 
             table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+        }
+
+        function drawChart() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Бренд');
+            data.addColumn('number', 'руб.');
+            data.addRows(/*[[${brandschart}]]*/);
+
+
+            var options = {
+                title: 'Продажи по брендам, руб.',
+                backgroundColor: '#9d9d9d'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
         }
     </script>
 </head>
@@ -82,21 +111,29 @@
 <body>
     <table class="columns">
         <tr>
-            <td><div id="curve_chart" style="width: 900px; height: 500px"></div></td>
-<!--            <td><div id="area_chart" style="width: 900px; height: 500px;"></div></td>-->
-        </tr>
-        <tr>
-            <td><div id="table_div" style="width: 900px; height: 200px"></div></td>
-        </tr>
-        <tr>
-
+            <td><div id="chart_div" style="width: 1200px; height: 500px"></div></td>
         </tr>
     </table>
 
-    <table style="width: 900px; height: 500px">
+    <table style="width: 1200px; height: 200px">
+        <tr>
+            <td>
+                <div id="donutchart" style="width: 400px; height: 200px"></div>
+            </td>
+            <td>
+                <div id="table_div" style="width: 400px; height: 200px"></div>
+            </td>
+            <td>
+                <div id="piechart" style="width: 400px; height: 200px"></div>
+            </td>
+        </tr>
+
+    </table>
+
+    <table style="width: 1200px; height: 500px">
     <tr>
         <td>
-            <table class="tg" style="width: 600px; height: 500px">
+            <table class="tg" style="width: 750px; height: 500px">
                 <thead>
                 <tr>
                     <th class="tg-mpz2"></th>
@@ -125,7 +162,7 @@
             </table>
         </td>
         <td>
-            <table class="tg" style="width: 300px; height: 500px">
+            <table class="tg" style="width: 450px; height: 500px">
                 <thead>
                 <tr>
                     <th class="tg-0pky">Нераспонанные товары (штрих-коды)</th>
