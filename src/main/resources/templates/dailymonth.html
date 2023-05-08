@@ -38,6 +38,16 @@
             <a href="details.html" th:href="@{/analytics/daily/details(date=${d.date})}">View</a>
         </td>
     </tr>
+    <tr th:each="s : ${summary}">
+        <td class="tg-0pky" th:text="${s.summary}" >16-01-2023</td>
+        <td class="tg-0pky" th:text="${s.orders.ordersQuantity}">итого заказов</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(s.orders.ordersSum, 1, 'WHITESPACE', 2, 'COMMA')}">1135,12</td>
+        <td class="tg-0pky" th:text="${s.sales.salesQuantity}">5</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(s.sales.salesSum, 1, 'WHITESPACE', 2, 'COMMA')}">5045</td>
+        <td class="tg-0pky" th:text="${s.returns.returnsQuantity}">5</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(s.returns.returnSum, 1, 'WHITESPACE', 2, 'COMMA')}">1214</td>
+        <td class="tg-0pky" th:text="${#numbers.formatDecimal(s.forPay, 1, 'WHITESPACE', 2, 'COMMA')}">1112,3</td>
+    </tr>
     </tbody>
 </table>
 </body>

@@ -1,9 +1,6 @@
 package com.dimm.wbmanager.analytics;
 
-import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
-import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
-import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
-import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
+import com.dimm.wbmanager.analytics.dto.*;
 import com.dimm.wbmanager.item.Item;
 import com.dimm.wbmanager.sale.SaleService;
 import lombok.RequiredArgsConstructor;
@@ -83,7 +80,9 @@ public class AnalyticsController {
     public String getOrdersAndSalesAndReturnsForMonth(@RequestParam String month, Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/daily");
         List<OrdersSalesReturnsForPayDto> ordersAndSales = analyticsService.getOrdersSalesReturnsForPayByMonth(month);
+        OrdersSalesReturnsForPayDtoSummary summary = analyticsService.getSummaryMonth(ordersAndSales);
         model.addAttribute("orsales", ordersAndSales);
+        model.addAttribute("summary", summary);
         return "dailymonth";
     }
 

@@ -1,9 +1,6 @@
 package com.dimm.wbmanager.analytics;
 
-import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
-import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
-import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
-import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
+import com.dimm.wbmanager.analytics.dto.*;
 import com.dimm.wbmanager.item.Item;
 
 import java.util.List;
@@ -17,6 +14,8 @@ public interface AnalyticsService {
     List<OrdersSalesReturnsForPayDto> getOrdersAndSalesAndReturnsByDates();
 
     List<OrdersSalesReturnsForPayDto> getOrdersSalesReturnsForPayByMonth(String month);
+
+    OrdersSalesReturnsForPayDtoSummary getSummaryMonth(List<OrdersSalesReturnsForPayDto> listMonth);
 
     List<OrdersAndSalesByDateDto> getOrdersAndSalesByDate(String date);
 

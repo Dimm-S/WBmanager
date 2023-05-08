@@ -1,10 +1,7 @@
 package com.dimm.wbmanager.analytics;
 
 import com.dimm.wbmanager.Month;
-import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
-import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
-import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
-import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
+import com.dimm.wbmanager.analytics.dto.*;
 import com.dimm.wbmanager.item.Item;
 import com.dimm.wbmanager.item.ItemService;
 import com.dimm.wbmanager.order.OrderService;
@@ -73,6 +70,29 @@ public class AnalyticsServiceImpl implements AnalyticsService{
 
         return analyticsMapper.mapForDayliTable(
                 datesList, orders, sales, returns, forPay);
+    }
+
+    @Override
+    public OrdersSalesReturnsForPayDtoSummary getSummaryMonth(List<OrdersSalesReturnsForPayDto> listMonth) {
+        OrdersSalesReturnsForPayDtoSummary summary = new OrdersSalesReturnsForPayDtoSummary("ИТОГО",
+                new OrdersSalesReturnsForPayDtoSummary.Orders(0, 0D),
+                new OrdersSalesReturnsForPayDtoSummary.Sales(0, 0F),
+                new OrdersSalesReturnsForPayDtoSummary.Returns(0, 0F),
+                0F);
+
+        for (OrdersSalesReturnsForPayDto r : listMonth) {
+            summary.setOrders(new OrdersSalesReturnsForPayDtoSummary.Orders(
+                    summary.getOrders().getOrdersQuantity() + r.getOrders().getOrdersQuantity(),
+                            summary.getOrders().getOrdersSum() + r.getOrders().getOrdersSum()));
+            summary.setSales(new OrdersSalesReturnsForPayDtoSummary.Sales(
+                    summary.getSales().getSalesQuantity() + r.getSales().getSalesQuantity(),
+                    summary.getSales().getSalesSum() + r.getSales().getSalesSum()));
+            summary.setReturns(new OrdersSalesReturnsForPayDtoSummary.Returns(
+                    summary.getReturns().getReturnsQuantity() + r.getReturns().getReturnsQuantity(),
+                    summary.getReturns().getReturnSum() + r.getReturns().getReturnSum()));
+            summary.setForPay(summary.getForPay() + r.getForPay());
+        }
+        return summary;
     }
 
     /**
