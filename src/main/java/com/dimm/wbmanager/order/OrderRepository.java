@@ -2,6 +2,7 @@ package com.dimm.wbmanager.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -60,6 +61,22 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                     "WHERE EXTRACT(MONTH FROM order_date) = ?1 " +
                     "GROUP BY name")
     List<List<Object[]>> getMonthOrdersAndSumByItems(Integer month);
+
+    /**
+     * Количество и сумма заказов конкретного наименования товаров помесячно
+     */
+    @Query(nativeQuery = true, value =
+            "SELECT name, " +
+                    "EXTRACT(MONTH FROM order_date) AS MONTH,\n" +
+                    "EXTRACT(YEAR FROM order_date) AS YEAR, " +
+                    "COUNT(total_price), " +
+                    "SUM(total_price * (100 - discount_percent) / 100) " +
+                    "FROM orders AS o " +
+                    "JOIN items AS i ON o.barcode = i.barcode " +
+                    "WHERE name LIKE ?1 AND srid NOT IN (SELECT * FROM selfbuyouts) " +
+                    "GROUP BY name, MONTH, YEAR " +
+                    "ORDER BY YEAR ASC, MONTH ASC")
+   List<Object[]> getItemOrdersAndSumByMonths(String item);
 
     /**
      * Получение последней записи в таблице

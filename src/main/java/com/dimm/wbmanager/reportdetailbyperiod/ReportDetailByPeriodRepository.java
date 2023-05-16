@@ -57,6 +57,23 @@ public interface ReportDetailByPeriodRepository extends JpaRepository<ReportDeta
     List<List<Object[]>> getMonthSalesAndBuybacksByItems(Integer month);
 
     /**
+     * Продажи и возвараты товара помесячно
+     */
+    @Query(nativeQuery = true, value =
+            "SELECT EXTRACT(MONTH FROM sale_dt) AS MONTH, " +
+                    "EXTRACT(YEAR FROM sale_dt) AS YEAR, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Продажа' THEN 1 ELSE 0 END) AS sales_count, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Продажа' THEN retail_amount ELSE 0 END) AS sales_sum, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN 1 ELSE 0 END) AS returns_count, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN retail_amount ELSE 0 END) AS returns_sum " +
+                    "FROM reportdetailbyperiod as r " +
+                    "JOIN items AS i ON r.barcode = i.barcode " +
+                    "WHERE name LIKE ?1 AND quantity = 1 AND srid NOT IN (SELECT * FROM selfbuyouts) " +
+                    "GROUP BY MONTH, YEAR " +
+                    "ORDER BY YEAR ASC, MONTH ASC")
+    List<Object[]> getItemSalesAndReturnsByMonths(String item);
+
+    /**
      * Получение последней записи в таблице
      *
      * @return
@@ -66,6 +83,10 @@ public interface ReportDetailByPeriodRepository extends JpaRepository<ReportDeta
             "ORDER BY id DESC LIMIT 1")
     ReportDetailByPeriod getLast();
 
+    /**
+     * Продажи по брендам
+     * @return
+     */
     @Query(nativeQuery = true, value = "SELECT " +
             "brand_name, SUM(retail_amount) AS amount " +
             "FROM public.reportdetailbyperiod " +
@@ -73,10 +94,14 @@ public interface ReportDetailByPeriodRepository extends JpaRepository<ReportDeta
             "GROUP BY brand_name")
     List<Object[]> getBrandsDistr();
 
+    /**
+     * Продажи по товарам
+     * @return
+     */
     @Query(nativeQuery = true, value = "SELECT " +
             "name, SUM(retail_amount) AS amount " +
             "FROM public.reportdetailbyperiod as r " +
-            "JOIN items AS i ON r.nm_id = i.nm_id " +
+            "JOIN items AS i ON r.barcode = i.barcode " +
             "WHERE quantity = 1 AND supplier_oper_name = 'Продажа' " +
             "GROUP BY name " +
             "ORDER BY amount DESC")

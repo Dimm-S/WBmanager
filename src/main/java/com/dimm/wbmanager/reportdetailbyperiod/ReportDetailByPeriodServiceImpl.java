@@ -105,6 +105,14 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
         return reportDetailByPeriodRepository.getMonthSalesAndBuybacksByItems(Month.valueOf(month).ordinal() + 1);
     }
 
+    /**
+     * Продажи и возвараты товара помесячно
+     */
+    @Override
+    public List<Object[]> getItemSalesAndReturnsByMonths(String item) {
+        return reportDetailByPeriodRepository.getItemSalesAndReturnsByMonths(item);
+    }
+
     @Override
     public List<List<Object>> getBrandsDistr() {
         List<Object[]> brands = reportDetailByPeriodRepository.getBrandsDistr();

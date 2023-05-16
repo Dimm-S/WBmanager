@@ -79,6 +79,14 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.getMonthOrdersAndSumByItems(Month.valueOf(month).ordinal() + 1);
     }
 
+    /**
+     * Количество и сумма заказов конкретного наименования товаров помесячно
+     */
+    @Override
+    public List<Object[]> getItemOrdersAndSumByMonths(String item) {
+        return orderRepository.getItemOrdersAndSumByMonths(item);
+    }
+
     /** Обновление базы заказов по расписанию */
     @Scheduled(initialDelay = 60000, fixedDelay = 1800000)
     public void ordersAutoUpdate() {

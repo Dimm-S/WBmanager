@@ -15,6 +15,8 @@ public interface ReportDetailByPeriodService {
 
     List<List<Object[]>> getMonthSalesAndBuybacksByItems(String month);
 
+    List<Object[]> getItemSalesAndReturnsByMonths(String item);
+
     List<List<Object>> getBrandsDistr();
 
     List<List<Object>> getTopItems();

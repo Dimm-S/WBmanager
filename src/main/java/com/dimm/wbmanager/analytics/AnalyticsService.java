@@ -23,6 +23,8 @@ public interface AnalyticsService {
 
     List<List<Object>> getDetailedReportByMonthInObjects();
 
+    List<ItemStatMonthInfoDto> getItemStat(String item);
+
     List<Item> getAllItems();
 
     List<String> getUnindItemsBarcodes();

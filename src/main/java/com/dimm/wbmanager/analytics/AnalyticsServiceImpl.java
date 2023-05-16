@@ -181,6 +181,18 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return lists;
     }
 
+    /**
+     * Таблица статистики по товару за весь период
+     * @param item наименование товара
+     * @return
+     */
+    @Override
+    public List<ItemStatMonthInfoDto> getItemStat(String item) {
+        List<Object[]> orders = orderService.getItemOrdersAndSumByMonths(item);
+        List<Object[]> sales = reportDetailByPeriodService.getItemSalesAndReturnsByMonths(item);
+        return analyticsMapper.mapToItemStat(orders, sales);
+    }
+
     @Override
     public List<Item> getAllItems() {
         return itemService.getAllItems();

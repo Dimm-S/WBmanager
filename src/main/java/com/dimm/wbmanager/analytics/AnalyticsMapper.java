@@ -1,10 +1,7 @@
 package com.dimm.wbmanager.analytics;
 
 import com.dimm.wbmanager.Month;
-import com.dimm.wbmanager.analytics.dto.AmountByMonthDto;
-import com.dimm.wbmanager.analytics.dto.DetailedReportByMonthDto;
-import com.dimm.wbmanager.analytics.dto.OrdersAndSalesByDateDto;
-import com.dimm.wbmanager.analytics.dto.OrdersSalesReturnsForPayDto;
+import com.dimm.wbmanager.analytics.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -219,6 +216,42 @@ public class AnalyticsMapper {
         }
 
         return list;
+    }
+
+    public List<ItemStatMonthInfoDto> mapToItemStat(List<Object[]> orders, List<Object[]> salesAndReturns) {
+        List<ItemStatMonthInfoDto> itemStat = new ArrayList<>();
+
+        for (int i = 0; i < orders.size(); i++) {
+            ItemStatMonthInfoDto dto = new ItemStatMonthInfoDto();
+            dto.setName((String) orders.get(i)[0]);
+            dto.setMonth(Month.values()[Integer.parseInt(String.valueOf(orders.get(i)[1]), 0,
+                    (String.valueOf(orders.get(i)[1]).length()) - 2, 10) - 1]);
+            dto.setYear(((Double) orders.get(i)[2]).intValue());
+            dto.setOrdersQuantity(((BigInteger) orders.get(i)[3]).intValue());
+            dto.setOrdersSum((Double) orders.get(i)[4]);
+            dto.setSalesQuantity(((BigInteger) salesAndReturns.get(i)[2]).intValue());
+            dto.setSalesSum((Float) salesAndReturns.get(i)[3]);
+            dto.setReturnsQuantity(((BigInteger) salesAndReturns.get(i)[4]).intValue());
+            dto.setReturnSum((Float) salesAndReturns.get(i)[5]);
+            if (itemStat.size() == 0) {
+                dto.setReturnsPctQnt((double) dto.getReturnsQuantity() / (double) dto.getSalesQuantity() * 100);
+                dto.setBuyoutPctInQnt((double) dto.getSalesQuantity() / (double) dto.getOrdersQuantity() * 100);
+            } else {
+                dto.setReturnsPctQnt(
+                        (itemStat.stream().mapToDouble(ItemStatMonthInfoDto::getReturnsQuantity).sum() +
+                                (double) dto.getReturnsQuantity()) /
+                                (itemStat.stream().mapToDouble(ItemStatMonthInfoDto::getSalesQuantity).sum() +
+                                        (double) dto.getSalesQuantity()) * 100);
+                dto.setBuyoutPctInQnt(
+                        (itemStat.stream().mapToDouble(ItemStatMonthInfoDto::getSalesQuantity).sum() +
+                                (double) dto.getSalesQuantity()) /
+                                (itemStat.stream().mapToDouble(ItemStatMonthInfoDto::getOrdersQuantity).sum() +
+                                        (double) dto.getOrdersQuantity()) * 100);
+            }
+
+            itemStat.add(dto);
+        }
+        return itemStat;
     }
 
     private static Set<String> compileNamesToSet(List<List<Object[]>> list1,
