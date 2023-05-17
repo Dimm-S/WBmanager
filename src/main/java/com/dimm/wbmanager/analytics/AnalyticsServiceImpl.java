@@ -192,6 +192,17 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return analyticsMapper.mapToOverallStat(orders, sales);
     }
 
+    @Override
+    public SingleOverallStat getSingleOverallStat() {
+        List<StatByMonthsInfoDto> statByMonths = getOverallStat();
+        SingleOverallStat stat = new SingleOverallStat(
+                statByMonths.stream().mapToDouble(StatByMonthsInfoDto::getSalesSum).sum(),
+                statByMonths.get(statByMonths.size() - 1).getReturnsPctQnt(),
+                statByMonths.get(statByMonths.size() - 1).getBuyoutPctInQnt()
+        );
+        return stat;
+    }
+
     /**
      * Таблица статистики по товару за весь период
      * @param item наименование товара

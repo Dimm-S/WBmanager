@@ -102,11 +102,6 @@
     .tg .tg-mpz2{background-color:#fdf6e3;border-color:#93a1a1;color:#002b36;text-align:left;vertical-align:top}
     .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
 
-    .tg-8zsm{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
-        font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
-    .tg-3dpz{background-color:#cccccc;border-color:#aaaaaa;text-align:left;vertical-align:top;
-        font-family:Arial, sans-serif;}
-
     th, td {
         padding: 10px;
     }
@@ -132,56 +127,20 @@
                 <div id="piechart" style="width: 400px; height: 200px"></div>
             </td>
         </tr>
-
     </table>
 
-    <table style="width: 1200px; height: 300px">
-        <thead>
+    <table style="width: 1200px; height: 300px; text-align: center; font-family:Arial, sans-serif; font-size:30px;
+    background-color:#b4d798;">
         <tr>
-            <th class="tg-3dpz" colspan="2" rowspan="2" th:text="${overallstat.get(0).name}">Наименование</th>
-            <th class="tg-3dpz" th:each="i : ${overallstat}" th:text="${i.month}">ЯНВАРЬ</th>
+            <th style="border: 10px solid; border-color: #f0f0f0">Продажи</th>
+            <th style="border: 10px solid; border-color: #f0f0f0">Выкупы, %</th>
+            <th style="border: 10px solid; border-color: #f0f0f0">Возвраты, %</th>
         </tr>
         <tr>
-            <th class="tg-3dpz" th:each="i : ${overallstat}" th:text="${i.year}">2023</th>
+            <td style="border: 10px solid; border-color: #f0f0f0" th:text="${#numbers.formatDecimal(singleOverallStat.salesSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
+            <td style="border: 10px solid; border-color: #f0f0f0" th:text="${#numbers.formatDecimal(singleOverallStat.buyoutPctInQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
+            <td style="border: 10px solid; border-color: #f0f0f0" th:text="${#numbers.formatDecimal(singleOverallStat.returnsPctQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
         </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="tg-8zsm" rowspan="2">Заказы</td>
-            <td class="tg-8zsm">шт.</td>
-            <td class="tg-8zsm" th:each="i : ${overallstat}" th:text="${i.ordersQuantity}"></td>
-        </tr>
-        <tr>
-            <td class="tg-8zsm">руб.</td>
-            <td class="tg-8zsm" th:each="i : ${overallstat}" th:text="${#numbers.formatDecimal(i.ordersSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
-        </tr>
-        <tr>
-            <td class="tg-8zsm" rowspan="2">Продажи</td>
-            <td class="tg-8zsm">шт.</td>
-            <td class="tg-8zsm" th:each="i : ${overallstat}" th:text="${i.salesQuantity}"></td>
-        </tr>
-        <tr>
-            <td class="tg-8zsm">руб.</td>
-            <td class="tg-8zsm" th:each="i : ${overallstat}" th:text="${#numbers.formatDecimal(i.salesSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
-        </tr>
-        <tr>
-            <td class="tg-8zsm" rowspan="2">Возвраты</td>
-            <td class="tg-8zsm">шт.</td>
-            <td class="tg-8zsm" th:each="i : ${overallstat}" th:text="${i.returnsQuantity}"></td>
-        </tr>
-        <tr>
-            <td class="tg-8zsm">руб.</td>
-            <td class="tg-8zsm" th:each="i : ${overallstat}" th:text="${#numbers.formatDecimal(i.returnSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
-        </tr>
-        <tr>
-            <td class="tg-8zsm" colspan="2">% возвратов</td>
-            <td class="tg-8zsm" th:each="i : ${overallstat}" th:text="${#numbers.formatDecimal(i.returnsPctQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
-        </tr>
-        <tr>
-            <td class="tg-8zsm" colspan="2">% выкупов</td>
-            <td class="tg-8zsm" th:each="i : ${overallstat}" th:text="${#numbers.formatDecimal(i.buyoutPctInQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
-        </tr>
-        </tbody>
     </table>
 
     <table style="width: 1200px; height: 500px">

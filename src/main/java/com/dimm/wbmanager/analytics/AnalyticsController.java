@@ -39,18 +39,18 @@ public class AnalyticsController {
     public String getAmountChartByMonth(Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/amountchart");
         List<List<Object>> amountList = analyticsService.getAmountByMonthForChart();
-        List<List<Object>> saleList = saleService.getSalesByDays();
+//        List<List<Object>> saleList = saleService.getSalesByDays(); //TODO отключено
         List<List<Object>> itemsList = analyticsService.getTopItems();
         List<List<Object>> brandsList = analyticsService.getBrandsDistr();
-        List<StatByMonthsInfoDto> overallStatList = analyticsService.getOverallStat();
+        SingleOverallStat singleOverallStat = analyticsService.getSingleOverallStat();
         List<OrdersSalesReturnsForPayDto> ordersAndSales = analyticsService.getOrdersAndSalesAndReturnsByDates();
         List<String> unidBarcodes = analyticsService.getUnindItemsBarcodes();
 
         model.addAttribute("amountchart", amountList);
         model.addAttribute("itemschart", itemsList);
         model.addAttribute("brandschart", brandsList);
-        model.addAttribute("overallstat", overallStatList);
-        model.addAttribute("saleschart", saleList); //TODO отключено
+        model.addAttribute("singleOverallStat", singleOverallStat);
+//        model.addAttribute("saleschart", saleList); //TODO отключено
         model.addAttribute("orsales", ordersAndSales);
         model.addAttribute("barcodes", unidBarcodes);
 
@@ -117,6 +117,14 @@ public class AnalyticsController {
         model.addAttribute("detailedmonth", detailedReportByMonthDtoList);
         model.addAttribute("monthname", month);
         return "month";
+    }
+
+    @GetMapping("/overallstat")
+    public String getOverallStat(Model model) {
+        log.info("Запрошен энтпойнт GET:/overallstat");
+        List<StatByMonthsInfoDto> overallStatList = analyticsService.getOverallStat();
+        model.addAttribute("overallstat", overallStatList);
+        return "overallstat";
     }
 
     /**

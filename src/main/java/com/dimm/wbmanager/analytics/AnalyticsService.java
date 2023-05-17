@@ -25,6 +25,8 @@ public interface AnalyticsService {
 
     List<StatByMonthsInfoDto> getOverallStat();
 
+    SingleOverallStat getSingleOverallStat();
+
     List<StatByMonthsInfoDto> getItemStat(String item);
 
     List<Item> getAllItems();
