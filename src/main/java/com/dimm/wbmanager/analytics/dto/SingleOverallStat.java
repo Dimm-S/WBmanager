@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SingleOverallStat {
+    private Integer salesQuantity;
     private Double salesSum;
     private Double returnsPctQnt;
     private Double buyoutPctInQnt;

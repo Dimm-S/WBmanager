@@ -129,17 +129,21 @@
         </tr>
     </table>
 
-    <table style="width: 1200px; height: 300px; text-align: center; font-family:Arial, sans-serif; font-size:30px;
+    <table style="width: 1200px; height: 250px; text-align: center; font-family:Arial, sans-serif; font-size:30px;
     background-color:#b4d798;">
         <tr>
             <th style="border: 10px solid; border-color: #f0f0f0">Продажи</th>
-            <th style="border: 10px solid; border-color: #f0f0f0">Выкупы, %</th>
-            <th style="border: 10px solid; border-color: #f0f0f0">Возвраты, %</th>
+            <th style="border: 10px solid; border-color: #f0f0f0">Выкупы</th>
+            <th style="border: 10px solid; border-color: #f0f0f0">Возвраты</th>
         </tr>
         <tr>
-            <td style="border: 10px solid; border-color: #f0f0f0" th:text="${#numbers.formatDecimal(singleOverallStat.salesSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
-            <td style="border: 10px solid; border-color: #f0f0f0" th:text="${#numbers.formatDecimal(singleOverallStat.buyoutPctInQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
-            <td style="border: 10px solid; border-color: #f0f0f0" th:text="${#numbers.formatDecimal(singleOverallStat.returnsPctQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
+            <td style="border: 10px solid; border-color: #f0f0f0"
+                th:text="${#numbers.formatDecimal(singleOverallStat.salesSum, 1, 'WHITESPACE', 0, 'COMMA') + ' руб. / ' +
+                singleOverallStat.salesQuantity + ' шт.'}"></td>
+            <td style="border: 10px solid; border-color: #f0f0f0"
+                th:text="${#numbers.formatDecimal(singleOverallStat.buyoutPctInQnt, 1, 'WHITESPACE', 2, 'COMMA') + ' %'}"></td>
+            <td style="border: 10px solid; border-color: #f0f0f0"
+                th:text="${#numbers.formatDecimal(singleOverallStat.returnsPctQnt, 1, 'WHITESPACE', 2, 'COMMA') + ' %'}"></td>
         </tr>
     </table>
 

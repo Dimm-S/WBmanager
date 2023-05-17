@@ -196,6 +196,7 @@ public class AnalyticsServiceImpl implements AnalyticsService{
     public SingleOverallStat getSingleOverallStat() {
         List<StatByMonthsInfoDto> statByMonths = getOverallStat();
         SingleOverallStat stat = new SingleOverallStat(
+                statByMonths.stream().mapToInt(StatByMonthsInfoDto::getSalesQuantity).sum(),
                 statByMonths.stream().mapToDouble(StatByMonthsInfoDto::getSalesSum).sum(),
                 statByMonths.get(statByMonths.size() - 1).getReturnsPctQnt(),
                 statByMonths.get(statByMonths.size() - 1).getBuyoutPctInQnt()
