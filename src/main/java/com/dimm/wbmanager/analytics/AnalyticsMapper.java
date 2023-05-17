@@ -139,16 +139,16 @@ public class AnalyticsMapper {
         return list;
     }
 
-    public List<DetailedReportByMonthDto> mapToDetailedMonthDto(List<List<Object[]>> orders,
-                                                                List<List<Object[]>> salesAndBuybacks) {
+    public List<MonthDetailedReportDto> mapToDetailedMonthDto(List<List<Object[]>> orders,
+                                                              List<List<Object[]>> salesAndBuybacks) {
 
         /* Собираем наименования товаров из двух списков в один хэшсет */
         Set<String> names = compileNamesToSet(orders, salesAndBuybacks);
 
-        List<DetailedReportByMonthDto> list = new ArrayList<>();
+        List<MonthDetailedReportDto> list = new ArrayList<>();
 
         for (String n : names) {
-            DetailedReportByMonthDto dto = new DetailedReportByMonthDto();
+            MonthDetailedReportDto dto = new MonthDetailedReportDto();
             dto.setName(n);
 
             /* Обработка списка заказов */
@@ -218,11 +218,48 @@ public class AnalyticsMapper {
         return list;
     }
 
-    public List<ItemStatMonthInfoDto> mapToItemStat(List<Object[]> orders, List<Object[]> salesAndReturns) {
-        List<ItemStatMonthInfoDto> itemStat = new ArrayList<>();
+    public List<StatByMonthsInfoDto> mapToOverallStat(List<Object[]> orders, List<Object[]> salesAndReturns) {
+        List<StatByMonthsInfoDto> overallStat = new ArrayList<>();
 
         for (int i = 0; i < orders.size(); i++) {
-            ItemStatMonthInfoDto dto = new ItemStatMonthInfoDto();
+            StatByMonthsInfoDto dto = new StatByMonthsInfoDto();
+            dto.setName("OVERALL");
+            dto.setMonth(Month.values()[Integer.parseInt(String.valueOf(orders.get(i)[0]), 0,
+                    (String.valueOf(orders.get(i)[0]).length()) - 2, 10) - 1]);
+            dto.setYear(((Double) orders.get(i)[1]).intValue());
+            dto.setOrdersQuantity(((BigInteger) orders.get(i)[2]).intValue());
+            dto.setOrdersSum((Double) orders.get(i)[3]);
+            dto.setSalesQuantity(((BigInteger) salesAndReturns.get(i)[2]).intValue());
+            dto.setSalesSum((Float) salesAndReturns.get(i)[3]);
+            dto.setReturnsQuantity(((BigInteger) salesAndReturns.get(i)[4]).intValue());
+            dto.setReturnSum((Float) salesAndReturns.get(i)[5]);
+            if (overallStat.size() == 0) {
+                dto.setReturnsPctQnt((double) dto.getReturnsQuantity() / (double) dto.getSalesQuantity() * 100);
+                dto.setBuyoutPctInQnt((double) dto.getSalesQuantity() / (double) dto.getOrdersQuantity() * 100);
+            } else {
+                dto.setReturnsPctQnt(
+                        (overallStat.stream().mapToDouble(StatByMonthsInfoDto::getReturnsQuantity).sum() +
+                                (double) dto.getReturnsQuantity()) /
+                                (overallStat.stream().mapToDouble(StatByMonthsInfoDto::getSalesQuantity).sum() +
+                                        (double) dto.getSalesQuantity()) * 100);
+                dto.setBuyoutPctInQnt(
+                        (overallStat.stream().mapToDouble(StatByMonthsInfoDto::getSalesQuantity).sum() +
+                                (double) dto.getSalesQuantity()) /
+                                (overallStat.stream().mapToDouble(StatByMonthsInfoDto::getOrdersQuantity).sum() +
+                                        (double) dto.getOrdersQuantity()) * 100);
+            }
+
+            overallStat.add(dto);
+        }
+        return overallStat;
+    }
+
+
+    public List<StatByMonthsInfoDto> mapToItemStat(List<Object[]> orders, List<Object[]> salesAndReturns) {
+        List<StatByMonthsInfoDto> itemStat = new ArrayList<>();
+
+        for (int i = 0; i < orders.size(); i++) {
+            StatByMonthsInfoDto dto = new StatByMonthsInfoDto();
             dto.setName((String) orders.get(i)[0]);
             dto.setMonth(Month.values()[Integer.parseInt(String.valueOf(orders.get(i)[1]), 0,
                     (String.valueOf(orders.get(i)[1]).length()) - 2, 10) - 1]);
@@ -238,14 +275,14 @@ public class AnalyticsMapper {
                 dto.setBuyoutPctInQnt((double) dto.getSalesQuantity() / (double) dto.getOrdersQuantity() * 100);
             } else {
                 dto.setReturnsPctQnt(
-                        (itemStat.stream().mapToDouble(ItemStatMonthInfoDto::getReturnsQuantity).sum() +
+                        (itemStat.stream().mapToDouble(StatByMonthsInfoDto::getReturnsQuantity).sum() +
                                 (double) dto.getReturnsQuantity()) /
-                                (itemStat.stream().mapToDouble(ItemStatMonthInfoDto::getSalesQuantity).sum() +
+                                (itemStat.stream().mapToDouble(StatByMonthsInfoDto::getSalesQuantity).sum() +
                                         (double) dto.getSalesQuantity()) * 100);
                 dto.setBuyoutPctInQnt(
-                        (itemStat.stream().mapToDouble(ItemStatMonthInfoDto::getSalesQuantity).sum() +
+                        (itemStat.stream().mapToDouble(StatByMonthsInfoDto::getSalesQuantity).sum() +
                                 (double) dto.getSalesQuantity()) /
-                                (itemStat.stream().mapToDouble(ItemStatMonthInfoDto::getOrdersQuantity).sum() +
+                                (itemStat.stream().mapToDouble(StatByMonthsInfoDto::getOrdersQuantity).sum() +
                                         (double) dto.getOrdersQuantity()) * 100);
             }
 

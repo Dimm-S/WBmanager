@@ -42,12 +42,14 @@ public class AnalyticsController {
         List<List<Object>> saleList = saleService.getSalesByDays();
         List<List<Object>> itemsList = analyticsService.getTopItems();
         List<List<Object>> brandsList = analyticsService.getBrandsDistr();
+        List<StatByMonthsInfoDto> overallStatList = analyticsService.getOverallStat();
         List<OrdersSalesReturnsForPayDto> ordersAndSales = analyticsService.getOrdersAndSalesAndReturnsByDates();
         List<String> unidBarcodes = analyticsService.getUnindItemsBarcodes();
 
         model.addAttribute("amountchart", amountList);
         model.addAttribute("itemschart", itemsList);
         model.addAttribute("brandschart", brandsList);
+        model.addAttribute("overallstat", overallStatList);
         model.addAttribute("saleschart", saleList); //TODO отключено
         model.addAttribute("orsales", ordersAndSales);
         model.addAttribute("barcodes", unidBarcodes);
@@ -111,7 +113,7 @@ public class AnalyticsController {
     @GetMapping("/month")
     public String getMonthByItems(@RequestParam(name = "month", required = true) String month, Model model) {
         log.info("Запрошен энтпойнт GET:/analytics/month");
-        List<DetailedReportByMonthDto> detailedReportByMonthDtoList = analyticsService.getDetailedReportByMonth(month);
+        List<MonthDetailedReportDto> detailedReportByMonthDtoList = analyticsService.getMonthDetailedReport(month);
         model.addAttribute("detailedmonth", detailedReportByMonthDtoList);
         model.addAttribute("monthname", month);
         return "month";
@@ -126,7 +128,7 @@ public class AnalyticsController {
     @GetMapping("/itemstat")
     public String getItemByMonths(@RequestParam(name = "item") String item, Model model) {
         log.info("Запрошен энтпойнт GET:/itemstat");
-        List<ItemStatMonthInfoDto> itemstat = analyticsService.getItemStat(item);
+        List<StatByMonthsInfoDto> itemstat = analyticsService.getItemStat(item);
         model.addAttribute("itemstat", itemstat);
         return "itemstat";
     }

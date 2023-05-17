@@ -13,6 +13,8 @@ public interface ReportDetailByPeriodService {
 
     List<List<Object>> getAmountByMonthForChart();
 
+    List<Object[]> getSalesAndReturnsByMonths();
+
     List<List<Object[]>> getMonthSalesAndBuybacksByItems(String month);
 
     List<Object[]> getItemSalesAndReturnsByMonths(String item);

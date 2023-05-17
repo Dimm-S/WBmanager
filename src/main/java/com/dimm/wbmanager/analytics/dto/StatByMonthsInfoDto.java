@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemStatMonthInfoDto {
+public class StatByMonthsInfoDto {
     private String name;
     private Month month;
     private Integer year;

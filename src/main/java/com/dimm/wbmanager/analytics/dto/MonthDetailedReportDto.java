@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DetailedReportByMonthDto {
+public class MonthDetailedReportDto {
     private String name;
     private Integer ordersQuantity;
     private Double ordersSum;

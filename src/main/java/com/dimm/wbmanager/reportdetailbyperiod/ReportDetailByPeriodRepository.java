@@ -57,6 +57,24 @@ public interface ReportDetailByPeriodRepository extends JpaRepository<ReportDeta
     List<List<Object[]>> getMonthSalesAndBuybacksByItems(Integer month);
 
     /**
+     * Продажи и возвараты общие помесячно
+     */
+    @Query(nativeQuery = true, value =
+            "SELECT EXTRACT(MONTH FROM sale_dt) AS MONTH, " +
+                    "EXTRACT(YEAR FROM sale_dt) AS YEAR, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Продажа' THEN 1 ELSE 0 END) AS sales_count, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Продажа' THEN retail_amount ELSE 0 END) AS sales_sum, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN 1 ELSE 0 END) AS returns_count, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN retail_amount ELSE 0 END) AS returns_sum " +
+                    "FROM reportdetailbyperiod as r " +
+                    "JOIN items AS i ON r.barcode = i.barcode " +
+                    "WHERE quantity = 1 AND srid NOT IN (SELECT * FROM selfbuyouts) " +
+                    "AND sale_dt >= '2022-10-01 00:00:00.000000' " + //TODO несоответствие периодов в базах ordrs и rdbp
+                    "GROUP BY MONTH, YEAR " +
+                    "ORDER BY YEAR ASC, MONTH ASC")
+    List<Object[]> getSalesAndReturnsByMonths();
+
+    /**
      * Продажи и возвараты товара помесячно
      */
     @Query(nativeQuery = true, value =

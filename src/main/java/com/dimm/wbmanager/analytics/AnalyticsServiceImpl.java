@@ -128,15 +128,15 @@ public class AnalyticsServiceImpl implements AnalyticsService{
      * @return
      */
     @Override
-    public List<DetailedReportByMonthDto> getDetailedReportByMonth(String month) {
+    public List<MonthDetailedReportDto> getMonthDetailedReport(String month) {
         List<List<Object[]>> orders = orderService.getMonthOrdersAndSumByItems(month);
         List<List<Object[]>> sales = reportDetailByPeriodService.getMonthSalesAndBuybacksByItems(month);
-        List<DetailedReportByMonthDto> list = analyticsMapper.mapToDetailedMonthDto(orders, sales);
+        List<MonthDetailedReportDto> list = analyticsMapper.mapToDetailedMonthDto(orders, sales);
 
-        DetailedReportByMonthDto total = new DetailedReportByMonthDto("ИТОГО",
+        MonthDetailedReportDto total = new MonthDetailedReportDto("ИТОГО",
                 0, 0D, 0, 0F, 0, 0F,
                 0D, 0D, 0D, 0D);
-        for (DetailedReportByMonthDto r : list) {
+        for (MonthDetailedReportDto r : list) {
             total.setOrdersQuantity(total.getOrdersQuantity() + r.getOrdersQuantity());
             total.setOrdersSum(total.getOrdersSum() + r.getOrdersSum());
             total.setSalesQuantity(total.getSalesQuantity() + r.getSalesQuantity());
@@ -164,8 +164,8 @@ public class AnalyticsServiceImpl implements AnalyticsService{
     @Override
     public List<List<Object>> getDetailedReportByMonthInObjects() {
         List<List<Object>> lists = new ArrayList<>();
-        List<DetailedReportByMonthDto> report = getDetailedReportByMonth("МАРТ");  // TODO временно
-        for (DetailedReportByMonthDto r : report) {
+        List<MonthDetailedReportDto> report = getMonthDetailedReport("МАРТ");  // TODO временно
+        for (MonthDetailedReportDto r : report) {
             lists.add(new ArrayList<>(Arrays.asList(r.getName(),
                     r.getOrdersQuantity(),
                     r.getOrdersSum(),
@@ -182,12 +182,23 @@ public class AnalyticsServiceImpl implements AnalyticsService{
     }
 
     /**
+     * Общая статистика за весь период
+     * @return
+     */
+    @Override
+    public List<StatByMonthsInfoDto> getOverallStat() {
+        List<Object[]> orders = orderService.getOrdersAndSumByMonths();
+        List<Object[]> sales = reportDetailByPeriodService.getSalesAndReturnsByMonths();
+        return analyticsMapper.mapToOverallStat(orders, sales);
+    }
+
+    /**
      * Таблица статистики по товару за весь период
      * @param item наименование товара
      * @return
      */
     @Override
-    public List<ItemStatMonthInfoDto> getItemStat(String item) {
+    public List<StatByMonthsInfoDto> getItemStat(String item) {
         List<Object[]> orders = orderService.getItemOrdersAndSumByMonths(item);
         List<Object[]> sales = reportDetailByPeriodService.getItemSalesAndReturnsByMonths(item);
         return analyticsMapper.mapToItemStat(orders, sales);

@@ -69,6 +69,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.getOrdersAndSumByDate(LocalDate.parse(date));
     }
 
+    @Override
+    public List<Object[]> getOrdersAndSumByMonths() {
+        return orderRepository.getOrdersAndSumByMonths();
+    }
+
     /**
      * Количество и сумма заказов за указанный месяц с группировкой по наименованию товаров
      * @param month месяц

@@ -63,6 +63,21 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<List<Object[]>> getMonthOrdersAndSumByItems(Integer month);
 
     /**
+     * Количество и сумма заказов общие помесячно
+     */
+    @Query(nativeQuery = true, value =
+            "SELECT EXTRACT(MONTH FROM order_date) AS MONTH,\n" +
+                    "EXTRACT(YEAR FROM order_date) AS YEAR, " +
+                    "COUNT(total_price), " +
+                    "SUM(total_price * (100 - discount_percent) / 100) " +
+                    "FROM orders AS o " +
+                    "JOIN items AS i ON o.barcode = i.barcode " +
+                    "WHERE srid NOT IN (SELECT * FROM selfbuyouts) " +
+                    "GROUP BY MONTH, YEAR " +
+                    "ORDER BY YEAR ASC, MONTH ASC")
+    List<Object[]> getOrdersAndSumByMonths();
+
+    /**
      * Количество и сумма заказов конкретного наименования товаров помесячно
      */
     @Query(nativeQuery = true, value =

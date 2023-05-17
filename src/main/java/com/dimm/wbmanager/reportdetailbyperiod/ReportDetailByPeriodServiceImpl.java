@@ -95,6 +95,11 @@ public class ReportDetailByPeriodServiceImpl implements ReportDetailByPeriodServ
         return listlist;
     }
 
+    @Override
+    public List<Object[]> getSalesAndReturnsByMonths() {
+        return reportDetailByPeriodRepository.getSalesAndReturnsByMonths();
+    }
+
     /**
      * Продажи и возвраты за месяц с группировкой по наименованиям товаров
      * @param month месяц
