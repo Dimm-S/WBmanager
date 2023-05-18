@@ -141,6 +141,21 @@ public class AnalyticsController {
         return "itemstat";
     }
 
+    /**
+     * Таблица статистики по бренду за весь период
+     * @param brand наименование бренда
+     * @param model
+     * @return
+     */
+    @GetMapping("/brandstat")
+    public String getBrandByMonths(@RequestParam(name = "brand") String brand, Model model) {
+        log.info("Запрошен энтпойнт GET:/brandstat");
+        List<StatByMonthsInfoDto> brandstat = analyticsService.getBrandStat(brand);
+        model.addAttribute("itemstat", brandstat);
+        return "itemstat";
+    }
+
+
     /** //TODO отключено!
      * Таблица за месяц с заказами, продажами, возвратами... по наименованиям товаров (таблица GoogleCharts)
      *

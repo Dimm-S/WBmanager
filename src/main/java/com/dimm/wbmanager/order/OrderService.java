@@ -17,4 +17,6 @@ public interface OrderService {
     List<List<Object[]>> getMonthOrdersAndSumByItems(String month);
 
     List<Object[]> getItemOrdersAndSumByMonths(String item);
+
+    List<Object[]> getBrandOrdersAndSumByMonths(String brand);
 }

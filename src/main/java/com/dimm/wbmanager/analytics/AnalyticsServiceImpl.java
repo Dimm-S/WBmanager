@@ -216,6 +216,19 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return analyticsMapper.mapToItemStat(orders, sales);
     }
 
+    /**
+     * Таблица статистики по бренду за весь период
+     * @param brand наименование бренда
+     * @return
+     */
+    @Override
+    public List<StatByMonthsInfoDto> getBrandStat(String brand) {
+        List<Object[]> orders = orderService.getBrandOrdersAndSumByMonths(brand);
+        List<Object[]> sales = reportDetailByPeriodService.getBrandSalesAndReturnsByMonths(brand);
+        return analyticsMapper.mapToItemStat(orders, sales);
+    }
+
+
     @Override
     public List<Item> getAllItems() {
         return itemService.getAllItems();

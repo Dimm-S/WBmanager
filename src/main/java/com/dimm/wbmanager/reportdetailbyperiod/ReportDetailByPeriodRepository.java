@@ -92,6 +92,23 @@ public interface ReportDetailByPeriodRepository extends JpaRepository<ReportDeta
     List<Object[]> getItemSalesAndReturnsByMonths(String item);
 
     /**
+     * Продажи и возвараты по бренду помесячно
+     */
+    @Query(nativeQuery = true, value =
+            "SELECT EXTRACT(MONTH FROM sale_dt) AS MONTH, " +
+                    "EXTRACT(YEAR FROM sale_dt) AS YEAR, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Продажа' THEN 1 ELSE 0 END) AS sales_count, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Продажа' THEN retail_amount ELSE 0 END) AS sales_sum, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN 1 ELSE 0 END) AS returns_count, " +
+                    "SUM(CASE WHEN supplier_oper_name = 'Возврат' THEN retail_amount ELSE 0 END) AS returns_sum " +
+                    "FROM reportdetailbyperiod as r " +
+                    "WHERE brand_name LIKE ?1 AND quantity = 1 AND srid NOT IN (SELECT * FROM selfbuyouts) " +
+                    "GROUP BY MONTH, YEAR " +
+                    "ORDER BY YEAR ASC, MONTH ASC")
+    List<Object[]> getBrandSalesAndReturnsByMonths(String brand);
+
+
+    /**
      * Получение последней записи в таблице
      *
      * @return

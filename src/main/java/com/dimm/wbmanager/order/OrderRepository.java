@@ -94,6 +94,22 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
    List<Object[]> getItemOrdersAndSumByMonths(String item);
 
     /**
+     * Количество и сумма заказов конкретного бренда помесячно
+     */
+    @Query(nativeQuery = true, value =
+            "SELECT i.brand, " +
+                    "EXTRACT(MONTH FROM order_date) AS MONTH,\n" +
+                    "EXTRACT(YEAR FROM order_date) AS YEAR, " +
+                    "COUNT(total_price), " +
+                    "SUM(total_price * (100 - discount_percent) / 100) " +
+                    "FROM orders AS o " +
+                    "JOIN items AS i ON o.barcode = i.barcode " + //TODO приходится связывать, потому что в orders нет бренда AEREA
+                    "WHERE i.brand LIKE ?1 AND srid NOT IN (SELECT * FROM selfbuyouts) " +
+                    "GROUP BY i.brand, MONTH, YEAR " +
+                    "ORDER BY YEAR ASC, MONTH ASC")
+    List<Object[]> getBrandOrdersAndSumByMonths(String brand);
+
+    /**
      * Получение последней записи в таблице
      *
      * @return
