@@ -6,7 +6,9 @@ public interface ItemService {
 
     void saveNewItem(Item item);
 
-    List<Item> getAllItems();
+    List<String> getAllItemNames();
+
+    List<String> getAllBrands();
 
     List<Item> getUnidItems();
 }

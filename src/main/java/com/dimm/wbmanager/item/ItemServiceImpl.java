@@ -27,8 +27,16 @@ public class ItemServiceImpl implements ItemService {
      * @return List of Items
      */
     @Override
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
+    public List<String> getAllItemNames() {
+        return itemRepository.getAllItemNames();
+    }
+
+    /**
+     * Получение списка брендов
+     * @return List of brands
+     */
+    public List<String> getAllBrands() {
+        return itemRepository.getAllBrands();
     }
 
     /**

@@ -20,12 +20,4 @@ public class OrderController {
     public void updateTable() throws IOException, InterruptedException {
         orderService.updateTable();
     }
-
-/*
-    @GetMapping("/andsum") // только для теста
-    public List<List<Object[]>> getOrdersAndSum() {
-        List<List<Object[]>> ordersAndSum = orderService.getOrdersAndSum();
-        return ordersAndSum;
-    }
-*/
 }

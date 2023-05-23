@@ -12,48 +12,48 @@
 <table class="tg">
     <thead>
     <tr>
-        <th class="tg-3dpz" colspan="2" rowspan="2" th:text="${itemstat.get(0).name}">Наименование</th>
-        <th class="tg-3dpz" th:each="i : ${itemstat}" th:text="${i.month}">ЯНВАРЬ</th>
+        <th class="tg-3dpz" colspan="2" rowspan="2" th:text="${stat.get(0).name}">Наименование</th>
+        <th class="tg-3dpz" th:each="i : ${stat}" th:text="${i.month}">ЯНВАРЬ</th>
     </tr>
     <tr>
-        <th class="tg-3dpz" th:each="i : ${itemstat}" th:text="${i.year}">2023</th>
+        <th class="tg-3dpz" th:each="i : ${stat}" th:text="${i.year}">2023</th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <td class="tg-8zsm" rowspan="2">Заказы</td>
         <td class="tg-8zsm">шт.</td>
-        <td class="tg-8zsm" th:each="i : ${itemstat}" th:text="${i.ordersQuantity}"></td>
+        <td class="tg-8zsm" th:each="i : ${stat}" th:text="${i.ordersQuantity}"></td>
     </tr>
     <tr>
         <td class="tg-8zsm">руб.</td>
-        <td class="tg-8zsm" th:each="i : ${itemstat}" th:text="${#numbers.formatDecimal(i.ordersSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
+        <td class="tg-8zsm" th:each="i : ${stat}" th:text="${#numbers.formatDecimal(i.ordersSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
     </tr>
     <tr>
         <td class="tg-8zsm" rowspan="2">Продажи</td>
         <td class="tg-8zsm">шт.</td>
-        <td class="tg-8zsm" th:each="i : ${itemstat}" th:text="${i.salesQuantity}"></td>
+        <td class="tg-8zsm" th:each="i : ${stat}" th:text="${i.salesQuantity}"></td>
     </tr>
     <tr>
         <td class="tg-8zsm">руб.</td>
-        <td class="tg-8zsm" th:each="i : ${itemstat}" th:text="${#numbers.formatDecimal(i.salesSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
+        <td class="tg-8zsm" th:each="i : ${stat}" th:text="${#numbers.formatDecimal(i.salesSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
     </tr>
     <tr>
         <td class="tg-8zsm" rowspan="2">Возвраты</td>
         <td class="tg-8zsm">шт.</td>
-        <td class="tg-8zsm" th:each="i : ${itemstat}" th:text="${i.returnsQuantity}"></td>
+        <td class="tg-8zsm" th:each="i : ${stat}" th:text="${i.returnsQuantity}"></td>
     </tr>
     <tr>
         <td class="tg-8zsm">руб.</td>
-        <td class="tg-8zsm" th:each="i : ${itemstat}" th:text="${#numbers.formatDecimal(i.returnSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
+        <td class="tg-8zsm" th:each="i : ${stat}" th:text="${#numbers.formatDecimal(i.returnSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
     </tr>
     <tr>
         <td class="tg-8zsm" colspan="2">% возвратов</td>
-        <td class="tg-8zsm" th:each="i : ${itemstat}" th:text="${#numbers.formatDecimal(i.returnsPctQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
+        <td class="tg-8zsm" th:each="i : ${stat}" th:text="${#numbers.formatDecimal(i.returnsPctQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
     </tr>
     <tr>
         <td class="tg-8zsm" colspan="2">% выкупов</td>
-        <td class="tg-8zsm" th:each="i : ${itemstat}" th:text="${#numbers.formatDecimal(i.buyoutPctInQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
+        <td class="tg-8zsm" th:each="i : ${stat}" th:text="${#numbers.formatDecimal(i.buyoutPctInQnt, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
     </tr>
     </tbody>
 </table>

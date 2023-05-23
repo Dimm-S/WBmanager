@@ -31,7 +31,9 @@ public interface AnalyticsService {
 
     List<StatByMonthsInfoDto> getBrandStat(String brand);
 
-    List<Item> getAllItems();
+    List<String> getAllItemNames();
+
+    List<String> getAllBrands();
 
     List<String> getUnindItemsBarcodes();
 

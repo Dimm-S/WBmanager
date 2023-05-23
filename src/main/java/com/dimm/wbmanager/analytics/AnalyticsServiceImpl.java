@@ -230,8 +230,8 @@ public class AnalyticsServiceImpl implements AnalyticsService{
 
 
     @Override
-    public List<Item> getAllItems() {
-        return itemService.getAllItems();
+    public List<String> getAllItemNames() {
+        return itemService.getAllItemNames();
     }
 
     @Override
@@ -240,6 +240,11 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return items.stream()
                 .map(Item :: getBarcode)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getAllBrands() {
+        return itemService.getAllBrands();
     }
 
     @Override

@@ -60,18 +60,14 @@
 <div class="topnav">
     <table>
         <tr>
-            <td><p>Наименование товара</p></td>
+            <td><p>Наименование бренда</p></td>
             <td>
-                <form action="/analytics/itemstat" target="frame2" method="get">
-                    <select name="item">
-                        <option value="Платье снежок">Платье снежок</option>
-                        <option value="Платье_шифон">Платье_шифон</option>
-                        <option value="Свитшот">Свитшот</option>
-                        <option value="Туника рваная">Туника рваная</option>
-                        <option value="Пайетка_платье">Пайетка_платье</option>
-                        <option value="Свитер_кашемир">Свитер_кашемир</option>
-                        <option value="Дождевик хаки">Дождевик хаки</option>
-                        <option value="Шлейка Сочный ананас c поводком в комплекте.">Шлейка Сочный ананас c поводком в комплекте.</option>
+                <form action="/analytics/brandstat" target="frame2" method="get">
+                    <select name="brand">
+                        <option th:each="brand : ${brandslist}"
+                                th:value="${brand}"
+                                th:text="${brand}">
+                        </option>
                     </select>
                     <button type="submit">Отправить</button>
                 </form>
@@ -81,7 +77,7 @@
 </div>
 
 <div class="main">
-    <iframe src="monthchoice.html" height="100%" width="100%" style="border:none;" name="frame2"></iframe>
+    <iframe src="paramchoice.html" height="100%" width="100%" style="border:none;" name="frame2"></iframe>
 </div>
 
 <body>
