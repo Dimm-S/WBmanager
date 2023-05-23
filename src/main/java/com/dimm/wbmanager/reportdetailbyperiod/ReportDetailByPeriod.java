@@ -85,6 +85,10 @@ public class ReportDetailByPeriod {
     private Float ppvzKvwPrcBase;  //Размер кВВ без НДС, % базовый
     @Column(name = "ppvz_kvw_prc")
     private Float ppvzKvwPrc;  //Итоговый кВВ без НДС, %
+    @Column(name = "sup_rating_prc_up")
+    private Float supRatingPrcUp; //Размер снижения кВВ из-за рейтинга, %
+    @Column(name = "is_kgvp_v2")
+    private Float isKgvpV2; //Размер снижения кВВ из-за акции, %
     @Column(name = "ppvz_sales_commission")
     private Float ppvzSalesCommission;  //Вознаграждение с продаж до вычета услуг поверенного, без НДС
     @Column(name = "ppvz_for_pay")

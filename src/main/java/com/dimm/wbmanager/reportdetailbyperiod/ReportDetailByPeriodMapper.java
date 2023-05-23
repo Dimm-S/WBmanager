@@ -16,11 +16,27 @@ public class ReportDetailByPeriodMapper {
 
     public ReportDetailByPeriod mapInputToReport(ReportDetailByPeriodInputDto dto) {
         LocalDateTime createDate;
+        LocalDateTime orderDate;
+        LocalDateTime saleDate;
+
         if (dto.getCreate_dt() != null) {
             createDate = LocalDateTime.parse(dto.getCreate_dt(), formatter);
         } else {
             createDate = null;
         }
+
+        if (dto.getOrder_dt() != null) {
+            orderDate = LocalDateTime.parse(dto.getOrder_dt(), formatter);
+        } else {
+            orderDate = null;
+        }
+
+        if (dto.getSale_dt() != null) {
+            saleDate = LocalDateTime.parse(dto.getSale_dt(), formatter);
+        } else {
+            saleDate = null;
+        }
+
         return new ReportDetailByPeriod(
                 dto.getRealizationreport_id(),
                 LocalDateTime.parse(dto.getDate_from(), formatter),
@@ -43,8 +59,8 @@ public class ReportDetailByPeriodMapper {
                 dto.getCommission_percent(),
                 dto.getOffice_name(),
                 dto.getSupplier_oper_name(),
-                LocalDateTime.parse(dto.getOrder_dt(), formatter),
-                LocalDateTime.parse(dto.getSale_dt(), formatter),
+                orderDate,
+                saleDate,
                 LocalDateTime.parse(dto.getRr_dt(), formatter),
                 dto.getShk_id(),
                 dto.getRetail_price_withdisc_rub(),
@@ -58,6 +74,8 @@ public class ReportDetailByPeriodMapper {
                 dto.getPpvz_spp_prc(),
                 dto.getPpvz_kvw_prc_base(),
                 dto.getPpvz_kvw_prc(),
+                dto.getSup_rating_prc_up(),
+                dto.getIs_kgvp_v2(),
                 dto.getPpvz_sales_commission(),
                 dto.getPpvz_for_pay(),
                 dto.getPpvz_reward(),

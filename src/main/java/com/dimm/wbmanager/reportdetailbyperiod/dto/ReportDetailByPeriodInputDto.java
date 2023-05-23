@@ -47,6 +47,8 @@ public class ReportDetailByPeriodInputDto {
     private Float ppvz_spp_prc;  //Скидка постоянного покупателя
     private Float ppvz_kvw_prc_base;  //Размер кВВ без НДС, % базовый
     private Float ppvz_kvw_prc;  //Итоговый кВВ без НДС, %
+    private Float sup_rating_prc_up; //Размер снижения кВВ из-за рейтинга, %
+    private Float is_kgvp_v2; //Размер снижения кВВ из-за акции, %
     private Float ppvz_sales_commission;  //Вознаграждение с продаж до вычета услуг поверенного, без НДС
     private Float ppvz_for_pay;  //К перечислению продавцу за реализованный товар
     private Float ppvz_reward;  //Возмещение за выдачу и возврат товаров на ПВЗ
