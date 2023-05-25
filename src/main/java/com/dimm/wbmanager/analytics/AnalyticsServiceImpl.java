@@ -228,6 +228,31 @@ public class AnalyticsServiceImpl implements AnalyticsService{
         return analyticsMapper.mapToItemStat(orders, sales);
     }
 
+    /**
+     * Преобразование списка в данные для графиков
+     * @param statList
+     * @return
+     */
+    @Override
+    public List<List<Object>> convertDtoToObjects(List<StatByMonthsInfoDto> statList) {
+        List<List<Object>> forGraphs = new ArrayList<>();
+        for (StatByMonthsInfoDto stat : statList) {
+            List<Object> objects = new ArrayList<>();
+            objects.add(stat.getName());
+            objects.add(stat.getMonth());
+            objects.add(stat.getYear());
+            objects.add(stat.getOrdersQuantity());
+            objects.add(stat.getOrdersSum());
+            objects.add(stat.getSalesQuantity());
+            objects.add(stat.getSalesSum());
+            objects.add(stat.getReturnsQuantity());
+            objects.add(stat.getReturnSum());
+            objects.add(stat.getReturnsPctQnt());
+            objects.add(stat.getBuyoutPctInQnt());
+            forGraphs.add(objects);
+        }
+        return forGraphs;
+    }
 
     @Override
     public List<String> getAllItemNames() {

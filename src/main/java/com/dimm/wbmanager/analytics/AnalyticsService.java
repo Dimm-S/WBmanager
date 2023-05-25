@@ -31,6 +31,8 @@ public interface AnalyticsService {
 
     List<StatByMonthsInfoDto> getBrandStat(String brand);
 
+    List<List<Object>> convertDtoToObjects(List<StatByMonthsInfoDto> statList);
+
     List<String> getAllItemNames();
 
     List<String> getAllBrands();

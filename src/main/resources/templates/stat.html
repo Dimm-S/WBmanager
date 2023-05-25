@@ -1,5 +1,84 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        google.charts.load('current', {'packages':['corechart']});
+
+        google.charts.setOnLoadCallback(drawVisualization);
+        google.charts.setOnLoadCallback(drawChart1);
+        google.charts.setOnLoadCallback(drawChart2);
+
+
+        function drawVisualization() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Месяц');
+            data.addColumn('number', 'Заказы, руб.');
+            data.addColumn('number', 'Продажи, руб.');
+            data.addRows(/*[[${chart1}]]*/);
+
+            var options = {
+                legend: { position: 'bottom' },
+                pointsVisible: true,
+                pointSize: 3,
+                series: {
+                    0: {color: '#6e6e6e'},
+                    1: {color: '#b90168'}
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+        function drawChart1() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Месяц');
+            data.addColumn('number', '% возвратов');
+            data.addColumn('number', '% выкупов');
+            data.addRows(/*[[${chart2}]]*/);
+
+            var options = {
+                legend: { position: 'bottom' },
+                pointShape: 'circle',
+                pointsVisible: true,
+                pointSize: 3,
+                series: {
+                    0: {color: '#417eff'},
+                    1: {color: '#f72cff'}
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart1'));
+
+            chart.draw(data, options);
+        }
+
+        function drawChart2() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Месяц');
+            data.addColumn('number', 'Средний чек, руб.');
+            data.addRows(/*[[${chart3}]]*/);
+
+            var options = {
+                legend: { position: 'bottom' },
+                pointShape: 'circle',
+                pointsVisible: true,
+                pointSize: 3,
+                series: {
+                    0: {color: '#39af00'},
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart2'));
+
+            chart.draw(data, options);
+        }
+
+    </script>
+</head>
+
 <style type="text/css">
     .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;}
     .tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
@@ -9,6 +88,7 @@
     .tg .tg-8zsm{border-color:#aaaaaa;text-align:left;vertical-align:top}
     .tg .tg-3dpz{background-color:#cccccc;border-color:#aaaaaa;text-align:left;vertical-align:top}
 </style>
+
 <table class="tg">
     <thead>
     <tr>
@@ -58,4 +138,17 @@
     </tbody>
 </table>
 <p>%% возвратов и выкупов даны нарастающим итогом</p>
+
+<table>
+    <tr>
+        <td><div id="chart_div" style="width: 700px; height: 250px"></div></td>
+    </tr>
+    <tr>
+        <td><div id="curve_chart1" style="width: 700px; height: 250px"></div></td>
+    </tr>
+    <tr>
+        <td><div id="curve_chart2" style="width: 700px; height: 250px"></div></td>
+    </tr>
+
+</table>
 </html>

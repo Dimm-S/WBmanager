@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -130,21 +132,52 @@ public class AnalyticsController {
     }
 
     /**
-     * Таблица статистики по товару за весь период
+     * Таблица и графики статистики по товару за весь период
      * @param item наименование товара
      * @param model
      * @return
      */
-    @GetMapping("/itemstat")
+    @GetMapping("/itemstat") //TODO убрать логику из контроллера
     public String getItemByMonths(@RequestParam(name = "item") String item, Model model) {
-        log.info("Запрошен энтпойнт GET:/stat");
+        log.info("Запрошен энтпойнт GET:/itemstat");
         List<StatByMonthsInfoDto> itemstat = analyticsService.getItemStat(item);
+        List<List<Object>> forCharts = analyticsService.convertDtoToObjects(itemstat);
         model.addAttribute("stat", itemstat);
+
+        List<List<Object>> forChart1 = new ArrayList<>();
+        for (List<Object> lo : forCharts) {
+            List<Object> newLo = new ArrayList<>();
+            newLo.add(lo.get(1));
+            newLo.add(lo.get(4));
+            newLo.add(lo.get(6));
+            forChart1.add(newLo);
+        }
+        model.addAttribute("chart1", forChart1);
+
+        List<List<Object>> forChart2 = new ArrayList<>();
+        for (List<Object> lo : forCharts) {
+            List<Object> newLo = new ArrayList<>();
+            newLo.add(lo.get(1));
+            newLo.add(lo.get(9));
+            newLo.add(lo.get(10));
+            forChart2.add(newLo);
+        }
+        model.addAttribute("chart2", forChart2);
+
+        List<List<Object>> forChart3 = new ArrayList<>();
+        for (List<Object> lo : forCharts) {
+            List<Object> newLo = new ArrayList<>();
+            newLo.add(lo.get(1));
+            newLo.add((Float) lo.get(6) / (Integer) lo.get(5));
+            forChart3.add(newLo);
+        }
+        model.addAttribute("chart3", forChart3);
+
         return "stat";
     }
 
     /**
-     * Таблица статистики по бренду за весь период
+     * Таблица и графики статистики по бренду за весь период
      * @param brand наименование бренда
      * @param model
      * @return
@@ -153,7 +186,38 @@ public class AnalyticsController {
     public String getBrandByMonths(@RequestParam(name = "brand") String brand, Model model) {
         log.info("Запрошен энтпойнт GET:/brandstat");
         List<StatByMonthsInfoDto> brandstat = analyticsService.getBrandStat(brand);
+        List<List<Object>> forCharts = analyticsService.convertDtoToObjects(brandstat);
         model.addAttribute("stat", brandstat);
+
+        List<List<Object>> forChart1 = new ArrayList<>();
+        for (List<Object> lo : forCharts) {
+            List<Object> newLo = new ArrayList<>();
+            newLo.add(lo.get(1));
+            newLo.add(lo.get(4));
+            newLo.add(lo.get(6));
+            forChart1.add(newLo);
+        }
+        model.addAttribute("chart1", forChart1);
+
+        List<List<Object>> forChart2 = new ArrayList<>();
+        for (List<Object> lo : forCharts) {
+            List<Object> newLo = new ArrayList<>();
+            newLo.add(lo.get(1));
+            newLo.add(lo.get(9));
+            newLo.add(lo.get(10));
+            forChart2.add(newLo);
+        }
+        model.addAttribute("chart2", forChart2);
+
+        List<List<Object>> forChart3 = new ArrayList<>();
+        for (List<Object> lo : forCharts) {
+            List<Object> newLo = new ArrayList<>();
+            newLo.add(lo.get(1));
+            newLo.add((Float) lo.get(6) / (Integer) lo.get(5));
+            forChart3.add(newLo);
+        }
+        model.addAttribute("chart3", forChart3);
+
         return "stat";
     }
 
