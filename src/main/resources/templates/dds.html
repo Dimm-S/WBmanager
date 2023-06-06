@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;}
+    .tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
+        font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
+        font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg .tg-head{background-color:#cccccc;border-color:#aaaaaa;text-align:left;vertical-align:top}
+    .tg .tg-type{background-color: #b4d798;border-color:#aaaaaa;text-align:left;vertical-align:top}
+    .tg .tg-simple{border-color:#aaaaaa;text-align:left;vertical-align:top}
+    .tg .tg-delta{background-color:#cccccc;border-color:#aaaaaa;text-align:left;vertical-align:top}
+
+</style>
+
+<table class="tg">
+    <thead>
+    <tr>
+        <th class="tg-head" rowspan="2" >Статьи</th>
+        <th class="tg-head" th:each="d : ${dds}" th:text="${d.month}">JANUARY</th>
+    </tr>
+    <tr>
+        <th class="tg-head" th:each="d : ${dds}" th:text="${d.year}">2023</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="tg-type">Операционная деятельнось</td>
+        <td class="tg-type" th:each="d : ${dds}" th:text="${#numbers.formatDecimal(d.operSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
+    </tr>
+    <tr th:each="i, iStat : ${operItems}">
+        <td class="tg-simple" th:text="${i}">Статья</td>
+        <td class="tg-simple" th:each="d : ${dds}" th:text="${#numbers.formatDecimal(d.getOperItemsSum().get(iStat.index), 1, 'WHITESPACE', 0, 'COMMA')}">0</td>
+    </tr>
+    <tr>
+        <td class="tg-type">Инвестиционная деятельность</td>
+        <td class="tg-type" th:each="d : ${dds}" th:text="${#numbers.formatDecimal(d.investSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
+    </tr>
+    <tr th:each="i, iStat : ${investItems}">
+        <td class="tg-simple" th:text="${i}">Статья</td>
+        <td class="tg-simple" th:each="d : ${dds}" th:text="${#numbers.formatDecimal(d.getInvestItemsSum().get(iStat.index), 1, 'WHITESPACE', 0, 'COMMA')}">0</td>
+    </tr>
+    <tr>
+        <td class="tg-type">Финансовая деятельность</td>
+        <td class="tg-type" th:each="d : ${dds}" th:text="${#numbers.formatDecimal(d.finSum, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
+    </tr>
+    <tr th:each="i, iStat : ${finItems}">
+        <td class="tg-simple" th:text="${i}">Статья</td>
+        <td class="tg-simple" th:each="d : ${dds}" th:text="${#numbers.formatDecimal(d.getFinItemsSum().get(iStat.index), 1, 'WHITESPACE', 0, 'COMMA')}">0</td>
+    </tr>
+    <tr>
+        <td class="tg-delta">Изменение денег за месяц</td>
+        <td class="tg-delta" th:each="d : ${dds}" th:text="${#numbers.formatDecimal(d.sumDelta, 1, 'WHITESPACE', 0, 'COMMA')}"></td>
+    </tr>
+    </tbody>
+</table>
+</html>

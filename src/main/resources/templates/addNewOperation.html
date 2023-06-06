@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Operations</title>
+</head>
+<body>
+<main>
+  <h1>Добавление операции</h1>
+  <form th:object="${newOperationForm}"
+        th:action="@{/dds/operations/create}"
+        method="post">
+      <div>
+          <label for="date">Дата операции</label>
+          <input id="date" type="date" th:field="*{date}"><br><br>
+          <p th:if="${#fields.hasErrors('date')}"
+             th:text="${#strings.listJoin(#fields.errors('date'), ', ')}"></p>
+      </div>
+      <div>
+          <label for="itemId">Статья</label>
+          <select id="itemId" th:field="*{itemId}">
+              <option th:each="item : ${ddsItemsList}"
+                      th:value="${item.getKey()}"
+                      th:text="${item.getValue()}">
+              </option>
+          </select><br><br>
+          <p th:if="${#fields.hasErrors('itemId')}"
+             th:text="${#strings.listJoin(#fields.errors('itemId'), ', ')}"></p>
+      </div>
+      <div>
+          <label for="sum">Сумма</label>
+          <input id="sum" type="number" th:field="*{sum}"><br><br>
+          <p th:if="${#fields.hasErrors('sum')}"
+             th:text="Неверная сумма"></p>
+      </div>
+      <div>
+          <label for="accountId">Счёт</label>
+          <select id="accountId" th:field="*{accountId}">
+              <option th:each="acc : ${ddsAccountsList}"
+                      th:value="${acc.getId()}"
+                      th:text="${acc.getName()}">
+              </option>
+          </select>
+          <br><br>
+          <p th:if="${#fields.hasErrors('accountId')}"
+             th:text="Неверный счёт"></p>
+      </div>
+      <div>
+          <label for="subject">Контрагент</label>
+          <input id="subject" type="text" th:field="*{subject}"><br><br>
+      </div>
+      <div>
+          <label for="description">Описание</label>
+          <input id="description" type="text" th:field="*{description}"><br><br>
+      </div>
+
+      <button type="submit">Добавить операцию</button>
+  </form>
+
+
+</main>
+
+</body>
+</html>

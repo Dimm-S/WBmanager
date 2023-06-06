@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .topnav {
+            height: 100px;
+            width: 100%;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #424242;
+            overflow-x: hidden;
+            padding-top: 0px;
+        }
+
+        .topnav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+
+        .topnav p {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+
+
+        .topnav form {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+
+        .topnav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-left: 160px; /* Same as the width of the sidenav */
+            font-size: 28px; /* Increased text to enable scrolling */
+            padding: 140px 10px;
+            height: 1200px;
+            width: 100%;
+        }
+
+        @media screen and (max-height: 450px) {
+            .topnav {padding-top: 15px;}
+            .topnav a {font-size: 18px;}
+        }
+    </style>
+</head>
+
+<div class="topnav">
+    <table>
+        <tr>
+            <td><p><a href="/dds" target="frame3">ОДДС</a></p></td>
+            <td><p><a href="/dds/operations" target="frame3">Операции</a></p></td>
+            <td><p><a href="/dds/operations/add" target="frame3">Новая операция</a></p></td>
+        </tr>
+    </table>
+</div>
+
+<div class="main">
+    <iframe src="monthchoice.html" height="100%" width="100%" style="border:none;" name="frame3"></iframe>
+</div>
+
+<body>
+
+</body>
+</html>

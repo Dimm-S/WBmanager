@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<style type="text/css">
+  .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;}
+  .tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
+    font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
+    font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg .tg-head{background-color:#cccccc;border-color:#aaaaaa;text-align:left;vertical-align:top}
+  .tg .tg-simple{border-color:#aaaaaa;text-align:left;vertical-align:top}
+</style>
+
+<body>
+<table class="tg">
+  <thead>
+  <tr>
+    <th class="tg-head">Статья</th>
+    <th class="tg-head">Дата</th>
+    <th class="tg-head">Сумма</th>
+    <th class="tg-head">Счёт</th>
+    <th class="tg-head">Кому</th>
+    <th class="tg-head">Описание</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="o : ${operations}">
+    <td class="tg-simple" th:text="${o.item}">статья</td>
+    <td class="tg-simple" th:text="${o.date}" >16-01-2023</td>
+    <td class="tg-simple" th:text="${o.sum}">1135,12</td>
+    <td class="tg-simple" th:text="${o.account}">счёт</td>
+    <td class="tg-simple" th:text="${o.subject}">кому</td>
+    <td class="tg-simple" th:text="${o.description}">описание</td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
