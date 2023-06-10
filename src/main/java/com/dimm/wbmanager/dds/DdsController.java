@@ -8,12 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -38,9 +37,12 @@ public class DdsController {
     }
 
     @GetMapping("/operations")
-    public String getAllOperations(Model model) {
+    public String getAllOperations(@RequestParam (required = false, defaultValue = "2020-01-01") String from,
+                                   @RequestParam (required = false,
+                                           defaultValue = "#{T(java.time.LocalDate).now().toString}") String to,
+                                   Model model) {
         log.info("Запрошен эндпойнт GET:/dds/operations");
-        List<DdsOperationDto> operations = service.getAllOperations();
+        List<DdsOperationDto> operations = service.getAllOperations(from, to);
         model.addAttribute("operations", operations);
         return "operations";
     }

@@ -72,8 +72,8 @@ public class DdsServiceImpl implements DdsService {
     }
 
     @Override
-    public List<DdsOperationDto> getAllOperations() {
-        return operationsRepository.getAllOperations();
+    public List<DdsOperationDto> getAllOperations(String from, String to) {
+        return operationsRepository.getAllOperations(LocalDate.parse(from), LocalDate.parse(to));
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.dimm.wbmanager.dds.model.DdsOperation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DdsOperationsRepository extends JpaRepository<DdsOperation, Long> {
@@ -50,6 +51,7 @@ public interface DdsOperationsRepository extends JpaRepository<DdsOperation, Lon
             "from DdsOperation as o " +
             "join DdsItem as i on o.ddsItem = i.id " +
             "join DdsAccount as a on o.account = a.id " +
+            "where o.operDate >= ?1 and o.operDate <= ?2 " +
             "order by o.operDate")
-    List<DdsOperationDto> getAllOperations();
+    List<DdsOperationDto> getAllOperations(LocalDate from, LocalDate to);
 }
