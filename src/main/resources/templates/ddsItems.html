@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;}
+    .tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
+        font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
+        font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg .tg-head{background-color:#cccccc;border-color:#aaaaaa;text-align:left;vertical-align:top}
+    .tg .tg-simple{border-color:#aaaaaa;text-align:left;vertical-align:top}
+</style>
+
+<body>
+<table class="tg">
+    <thead>
+    <tr>
+        <th class="tg-head">Статья</th>
+        <th class="tg-head">Описание</th>
+        <th class="tg-head">Группа</th>
+        <th class="tg-head">Входящая</th>
+        <th class="tg-head">Внутренняя</th>
+        <th class="tg-head">Тип</th>
+        <th class="tg-head">тип 1</th>
+        <th class="tg-head">тип 2</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="i : ${items}">
+        <td class="tg-simple" th:text="${i.item}">статья</td>
+        <td class="tg-simple" th:text="${i.description}" >описание</td>
+        <td class="tg-simple" th:text="${i.itemsGroup}">группа</td>
+        <td class="tg-simple" th:text="${i.isIncoming}">входящая</td>
+        <td class="tg-simple" th:text="${i.isInside}">внутренняя</td>
+        <td class="tg-simple" th:text="${i.type}">Тип</td>
+        <td class="tg-simple" th:text="${i.type1}">тип1</td>
+        <td class="tg-simple" th:text="${i.type2}">тип2</td>
+
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

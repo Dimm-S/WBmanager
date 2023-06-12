@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Items</title>
+</head>
+<body>
+<main>
+    <h1>Новая статья</h1>
+    <form th:object="${newItemForm}"
+          th:action="@{/dds/items/create}"
+          method="post">
+        <div>
+            <label for="item">Статья</label>
+            <input id="item" type="text" th:field="*{item}">
+            <br><br>
+            <p th:if="${#fields.hasErrors('item')}"
+               th:text="${#strings.listJoin(#fields.errors('item'), ', ')}"></p>
+        </div>
+        <div>
+            <label for="description">Описание</label>
+            <input id="description" type="text" th:field="*{description}">
+            <br><br>
+            <p th:if="${#fields.hasErrors('description')}"
+               th:text="${#strings.listJoin(#fields.errors('description'), ', ')}"></p>
+        </div>
+        <div>
+            <label for="itemsGroup">Группа</label>
+            <select id="itemsGroup" th:field="*{itemsGroup}">
+                <option th:each="group : ${ddsGroupsList}"
+                        th:value="${group.getKey()}"
+                        th:text="${group.getValue()}">
+                </option>
+            </select><br><br>
+            <p th:if="${#fields.hasErrors('itemsGroup')}"
+               th:text="${#strings.listJoin(#fields.errors('itemsGroup'), ', ')}"></p>
+        </div>
+        <div>
+            <label for="isIncoming">Входящая</label>
+            <input id="isIncoming" type="checkbox" th:field="*{isIncoming}"><br><br>
+        </div>
+        <div>
+            <label for="isInside">Внутренняя</label>
+            <input id="isInside" type="checkbox" th:field="*{isInside}"><br><br>
+        </div>
+        <div>
+            <label for="type">Тип</label>
+            <select id="type" th:field="*{type}">
+                <option value="oper">oper</option>
+                <option value="fin">fin</option>
+                <option value="invest">invest</option>
+            </select><br><br>
+        </div>
+
+        <button type="submit">Добавить статью</button>
+    </form>
+</main>
+</body>
+</html>

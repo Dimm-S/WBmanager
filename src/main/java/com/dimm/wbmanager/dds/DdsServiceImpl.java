@@ -1,11 +1,13 @@
 package com.dimm.wbmanager.dds;
 
 import com.dimm.wbmanager.Month;
+import com.dimm.wbmanager.dds.dto.DdsNewItemDto;
 import com.dimm.wbmanager.dds.dto.DdsNewOperationDto;
 import com.dimm.wbmanager.dds.dto.DdsOperationDto;
 import com.dimm.wbmanager.dds.dto.DdsSimpleDto;
 import com.dimm.wbmanager.dds.model.DdsAccount;
 import com.dimm.wbmanager.dds.model.DdsItem;
+import com.dimm.wbmanager.dds.model.DdsItemsGroup;
 import com.dimm.wbmanager.dds.model.DdsOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ public class DdsServiceImpl implements DdsService {
     private final DdsOperationsRepository operationsRepository;
     private final DdsItemsRepository itemsRepository;
     private final DdsAccountRepository accountRepository;
+    private final DdsItemsGroupRepository groupRepository;
 
     @Override
     public List<DdsSimpleDto> getDds() {
@@ -67,6 +70,21 @@ public class DdsServiceImpl implements DdsService {
     }
 
     @Override
+    public HashMap<Long, String> getAllGroupsNames() {
+        List<DdsItemsGroup> ddsGroupList = groupRepository.findAll();
+        HashMap<Long, String> map = new HashMap<>();
+        for (DdsItemsGroup group : ddsGroupList) {
+            map.put(group.getId(), group.getGroup());
+        }
+        return map;
+    }
+
+    @Override
+    public List<DdsItem> getAllItems() {
+        return itemsRepository.getAll();
+    }
+
+    @Override
     public List<DdsAccount> getAllAccountsNames() {
         return accountRepository.getAll();
     }
@@ -86,5 +104,20 @@ public class DdsServiceImpl implements DdsService {
                 operationDto.getAccountId(),
                 operationDto.getSubject(),
                 operationDto.getDescription()));
+    }
+
+    @Override
+    public void createItem(DdsNewItemDto itemDto) {
+        itemsRepository.saveAndFlush(new DdsItem(
+                null,
+                itemDto.getItem(),
+                itemDto.getDescription(),
+                itemDto.getItemsGroup(),
+                itemDto.getIsIncoming(),
+                itemDto.getIsInside(),
+                itemDto.getType(),
+                itemDto.getType1(),
+                itemDto.getType2()
+        ));
     }
 }
