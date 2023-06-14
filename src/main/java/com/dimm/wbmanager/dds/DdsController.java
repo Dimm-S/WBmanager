@@ -73,6 +73,13 @@ public class DdsController {
         return "redirect:/dds/operations";
     }
 
+    @PostMapping("/operations/delete")
+    public String deleteOperation(@RequestParam String id, Model model) {
+        log.info("Запрошен эндпойнт DELTE:/dds/operations/delete (удаление операции) {}", id);
+        service.deleteOperation(Long.parseLong(id));
+        return "redirect:/dds/operations";
+    }
+
     @GetMapping("/items")
     public String getAllItems(Model model) {
         log.info("Запрошен эндпойнт GET:/dds/items (отображение всех статей)");

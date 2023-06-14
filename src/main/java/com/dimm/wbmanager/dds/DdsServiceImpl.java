@@ -107,6 +107,11 @@ public class DdsServiceImpl implements DdsService {
     }
 
     @Override
+    public void deleteOperation(Long id) {
+        operationsRepository.deleteById(id);
+    }
+
+    @Override
     public void createItem(DdsNewItemDto itemDto) {
         itemsRepository.saveAndFlush(new DdsItem(
                 null,

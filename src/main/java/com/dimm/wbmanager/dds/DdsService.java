@@ -28,6 +28,8 @@ public interface DdsService {
 
     void createOperation(DdsNewOperationDto operationDto);
 
+    void deleteOperation(Long id);
+
     void createItem(DdsNewItemDto itemDto);
 
 

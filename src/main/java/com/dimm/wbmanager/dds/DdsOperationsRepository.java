@@ -47,7 +47,7 @@ public interface DdsOperationsRepository extends JpaRepository<DdsOperation, Lon
             "ORDER BY i.item\n")
     List<Double> getDdsByItemsForPeriod(Integer month, Integer year, String type);
 
-    @Query("select new com.dimm.wbmanager.dds.dto.DdsOperationDto(o.operDate, i.item, o.sum, a.name, o.subject, o.description) " +
+    @Query("select new com.dimm.wbmanager.dds.dto.DdsOperationDto(o.id, o.operDate, i.item, o.sum, a.name, o.subject, o.description) " +
             "from DdsOperation as o " +
             "join DdsItem as i on o.ddsItem = i.id " +
             "join DdsAccount as a on o.account = a.id " +

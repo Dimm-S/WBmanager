@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DdsOperationDto {
+    private Long id;
     private LocalDate date;
     private String item;
     private Double sum;

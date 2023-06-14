@@ -25,6 +25,7 @@
     <th class="tg-head">Счёт</th>
     <th class="tg-head">Кому</th>
     <th class="tg-head">Описание</th>
+    <th class="tg-head">Удалить</th>
 
   </tr>
   </thead>
@@ -36,6 +37,13 @@
     <td class="tg-simple" th:text="${o.account}">счёт</td>
     <td class="tg-simple" th:text="${o.subject}">кому</td>
     <td class="tg-simple" th:text="${o.description}">описание</td>
+    <td>
+      <form action="/dds/operations/delete" method="post">
+        <input id="id" name="id" type="hidden" th:value="${o.id}">
+        <button type="submit">del</button>
+      </form>
+    </td>
+
   </tr>
   </tbody>
 </table>
